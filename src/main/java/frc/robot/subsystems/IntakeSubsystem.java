@@ -6,9 +6,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class intake extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new intake. */
-  public intake() {}
+  public IntakeSubsystem() {}
 
   @Override
   public void periodic() {
