@@ -6,8 +6,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
@@ -18,7 +20,14 @@ public class ShooterSubsystem extends SubsystemBase {
   CANSparkMax counterspin = new CANSparkMax(ShooterConstants.counterspinID, MotorType.kBrushless);
   //holiwis
   /** Creates a new Shooter. */
-  public ShooterSubsystem() {}
+  public ShooterSubsystem() {
+    SparkMaxPIDController deliveryPID = delivery.getPIDController();
+    deliveryPID.setP(4);
+  }
+
+  public void setVelocity(){
+
+  }
 
   @Override
   public void periodic() {
