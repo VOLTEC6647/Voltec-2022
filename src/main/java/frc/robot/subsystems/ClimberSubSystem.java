@@ -24,14 +24,34 @@ public class ClimberSubSystem extends SubsystemBase
   {
   
   }
-
-  public void extendClimber()
+  /*
+  El boolean completely servirá para saber si se quiere extender/retraer por completo
+  Por ejemplo, presionando un boton. Esto para hacer más eficiente y rapido 
+  La escalada. Si el bool es falso, se usará el input directo del botón, es
+  Decir, si se presiona el boton de subir/bajar, este subira lo indicado por
+  El tiempo presionado, y viceversa. 
+  */
+  public void extendClimber(boolean completely) 
   {
+    if(completely) //Extender por completo
+    {
+      
+    }
+    else //Mientras que el boton esté presionado, el robot se extenderá (siempre y cuando no llegue al limite)
+    {
 
+    }
   }
 
-  public void retractClimnber()
+  public void retractClimnber(boolean completely)
   {
+    if(completely) //Retraer por completo
+    {
+      
+    }
+    else //Mientras que el boton esté presionado, el robot se retraerá (siempre y cuando no llegue al limite)
+    {
 
+    }
   }
 }
