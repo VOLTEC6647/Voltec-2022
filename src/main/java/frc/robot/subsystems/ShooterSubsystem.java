@@ -28,7 +28,14 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setVelocity(){
 
   }
+ //detener motor 
+  public void stopMotor(){
 
+  }
+//obtener error de los encoders a traves de la velocidad
+  public double getError(){
+    return 00.0;
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
