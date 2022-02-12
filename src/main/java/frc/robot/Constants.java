@@ -18,5 +18,7 @@ public final class Constants {
         public static final int frontRightID = 1;
         public static final int rearLeftID = 2;
         public static final int rearRightID = 3;
+        public static final int HighGearSolenoid = 0;
+        public static final int LowGearSolenoid = 1;
     }
 }
