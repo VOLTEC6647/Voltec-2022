@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+//import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -12,12 +13,14 @@ import frc.robot.subsystems.ShooterSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ShooterSpeed extends CommandBase {
   private final ShooterSubsystem shooter;
-  private final int shooterSpeed, cSpinSpeed;
+  private int shooterSpeed, cSpinSpeed;
   
   public ShooterSpeed(int shooterSpeed, int cSpinSpeed, ShooterSubsystem shooter) {
     this.shooter = shooter;
     this.shooterSpeed = shooterSpeed;
     this.cSpinSpeed = cSpinSpeed;
+    /*shooterSpeed=ShooterConstants.shooterFender;
+    cSpinSpeed = ShooterConstants.backSpinFender;*/
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }

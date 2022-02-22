@@ -86,14 +86,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   //obtener error de los encoders a traves de la velocidad
   public void publishData(){
-    SmartDashboard.putNumber("ShooterSetPoint", shooterSetpoint);
     SmartDashboard.putNumber("ShooterVelocity", shooterEncoder.getVelocity());
-    SmartDashboard.putNumber("CounterSpinSetpoint", counterSpinSetpoint);
     SmartDashboard.putNumber("CounterSpinVelocity", cSpinEncoder.getVelocity());
   }
 
   @Override
   public void periodic() {
+    publishData();
     // This method will be called once per scheduler run
   }
 
