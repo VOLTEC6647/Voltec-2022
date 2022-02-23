@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChasisConstants;
 
-public class ChasisSubsystem extends SubsystemBase {
+public class ChassisSubsystem extends SubsystemBase {
   WPI_TalonFX frontLeft = new WPI_TalonFX(ChasisConstants.frontLeftID);
   WPI_TalonFX frontRight = new WPI_TalonFX(ChasisConstants.frontRightID);
   WPI_TalonFX rearLeft = new WPI_TalonFX(ChasisConstants.rearLeftID);
@@ -23,7 +23,7 @@ public class ChasisSubsystem extends SubsystemBase {
   DifferentialDrive chasis; 
 
   /** Creates a new Chasis. */
-  public ChasisSubsystem() {
+  public ChassisSubsystem() {
     rearLeft.follow(frontLeft);
     rearRight.follow(frontRight);
     frontLeft.setInverted(false);
