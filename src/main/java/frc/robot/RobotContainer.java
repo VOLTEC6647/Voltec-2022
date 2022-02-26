@@ -7,55 +7,73 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DeliveryRotate;
+import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
+import frc.robot.subsystems.ClimberSubSystem;
 import frc.robot.subsystems.DeliverySubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DeliverySubsystem delivery = new DeliverySubsystem();
   private final ShooterSubsystem shooter = new ShooterSubsystem();
+  private final ClimberSubSystem climber = new ClimberSubSystem();
 
   private final XboxController joystick1 = new XboxController(OIConstants.KDriverControllerPort);
 
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+   * it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //Shooting from Fender
+    // Shooting from Fender
     new JoystickButton(joystick1, Button.kA.value)
-      .whenPressed(
-        new SequentialCommandGroup(
-          new ShooterSpeed(ShooterConstants.shooterFender, ShooterConstants.backSpinFender, shooter),
-          new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
-          new WaitUntilCommand(shooter::isInTolerance),
-          new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)
-        )  
-      ).whenReleased(new ShooterSpeed(0, 0, shooter));
+        .whenPressed(
+            new SequentialCommandGroup(
+                new ShooterSpeed(ShooterConstants.shooterFender, ShooterConstants.backSpinFender, shooter),
+                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
+                new WaitUntilCommand(shooter::isInTolerance),
+                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
+        .whenReleased(new ShooterSpeed(0, 0, shooter));
+
+    new JoystickButton(joystick1, Button.kLeftBumper.value)
+        .whenPressed(
+            new MoveClimber(ClimberConstants.reverseSpeed, climber));
+
+    new JoystickButton(joystick1, Button.kRightBumper.value)
+        .whenPressed(
+            new MoveClimber(ClimberConstants.forwardSpeed, climber));
   }
 
   /**
@@ -65,6 +83,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DeliveryRotate(0,delivery);
+    return new DeliveryRotate(0, delivery);
   }
 }
