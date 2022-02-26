@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
-
 public class ShooterSubsystem extends SubsystemBase {
   private CANSparkMax shooter = new CANSparkMax(ShooterConstants.shooterID, MotorType.kBrushless);
   private CANSparkMax cSpin = new CANSparkMax(ShooterConstants.counterSpinID, MotorType.kBrushless);
@@ -75,8 +74,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public boolean isInTolerance(){
     return Math.abs(shooterEncoder.getVelocity()-shooterSetpoint)<ShooterConstants.velocityTolerance && Math.abs(cSpinEncoder.getVelocity()-counterSpinSetpoint)<ShooterConstants.velocityTolerance;
   }
-
-
 
  //detener motor 
   public void stopMotors(){
