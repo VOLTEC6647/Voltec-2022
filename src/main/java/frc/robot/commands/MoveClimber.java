@@ -5,35 +5,36 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.ClimberSubSystem;
 
-public class ChassisTankDriveControl extends CommandBase {
-  private final ChassisSubsystem chassis;
-  private final double left;
-  private final double right;
-
-  /** Creates a new ChassisControl. */
-  public ChassisTankDriveControl(ChassisSubsystem chassis, double left, double right) {
+public class MoveClimber extends CommandBase {
+  
+  private ClimberSubSystem climber;
+  
+  private double speed;
+  /** Creates a new MoveClimber. */
+  public MoveClimber(double speed, ClimberSubSystem climber) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.chassis = chassis;
-    this.left = left;
-    this.right = right;
-    addRequirements(chassis);
+    addRequirements(climber);
+    this.speed = speed;
+    this.climber = climber;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    climber.setClimberPercentage(speed);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    chassis.TankDrive(left, right);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    climber.setClimberPercentage(0);
+  }
 
   // Returns true when the command should end.
   @Override
