@@ -4,11 +4,16 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
-public class IntakeSubsystem extends SubsystemBase {
-  /** Creates a new intake. */
-  public IntakeSubsystem() {}
+
+public class IntakeSubsytem extends SubsystemBase {
+  /** Creates a new IntakeSubsytem. */
+  private static CANSparkMax intakeMotor = new CANSparkMax(IntakeConstants.intakeMotorID,MotorType.kBrushless);
+
+  public IntakeSubsytem() {}
 
   @Override
   public void periodic() {
