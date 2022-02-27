@@ -20,6 +20,7 @@ import frc.robot.subsystems.ClimberSubSystem;
 import frc.robot.subsystems.DeliverySubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -44,13 +45,15 @@ public class RobotContainer {
 
   private final ChassisSubsystem chassis = new ChassisSubsystem();
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
-    chassis.setDefaultCommand(new ChassisTankDriveControl(chassis, 0, 0));
+    chassis.setDefaultCommand(new ChassisTankDriveControl(chassis, joystick1.getLeftY(), joystick1.getRightY()));
     configureButtonBindings();
   }
 
@@ -63,9 +66,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    final JoystickButton dpadUp = new JoystickButton(joystick1, 5);
+    final JoystickButton dpadRight = new JoystickButton(joystick1, 6);
+    final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
+    final JoystickButton dpadLeft = new JoystickButton(joystick1, 8);
     // Shooting from Fender
     new JoystickButton(joystick1, Button.kA.value)
-        .whenPressed(
+        .whenHeld(
             new SequentialCommandGroup(
                 new ShooterSpeed(ShooterConstants.shooterFender, ShooterConstants.backSpinFender, shooter),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
@@ -73,15 +80,15 @@ public class RobotContainer {
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
         .whenReleased(new ShooterSpeed(0, 0, shooter));
 
-    new JoystickButton(joystick1, Button.kLeftBumper.value)
-        .whenPressed(
-            new MoveClimber(ClimberConstants.reverseSpeed, climber));
+    dpadDown.whenPressed(
+        new MoveClimber(ClimberConstants.reverseSpeed, climber));
 
-    new JoystickButton(joystick1, Button.kRightBumper.value)
-        .whenPressed(
-            new MoveClimber(ClimberConstants.forwardSpeed, climber));
+    dpadUp.whenPressed(
+        new MoveClimber(ClimberConstants.forwardSpeed, climber));
+
+    new JoystickButton(joystick1, Button.kB.value)
+      .whenPressed(() -> chassis.toggleReduccion());
   }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
