@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,8 +31,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DeliverySubsystem delivery = new DeliverySubsystem();
   private final ShooterSubsystem shooter = new ShooterSubsystem();
+  private final IntakeSubsytem intake = new IntakeSubsytem();
 
   private final XboxController joystick1 = new XboxController(OIConstants.KDriverControllerPort);
+  
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -56,6 +60,15 @@ public class RobotContainer {
           new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)
         )  
       ).whenReleased(new ShooterSpeed(0, 0, shooter));
+
+      new JoystickButton(joystick1, Button.kRightTrigger.value)
+      .whenPressed(
+        new SequentialCommandGroup(
+        new IntakeMotorSpeed(IntakeConstants.)
+        )
+      )
+
+      
   }
 
   /**

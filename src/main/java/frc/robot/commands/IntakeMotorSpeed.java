@@ -5,16 +5,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.IntakeSubsytem;
+
+
 
 public class IntakeMotorSpeed extends CommandBase {
+  private IntakeSubsytem intake;
+  private double speed;
   /** Creates a new IntakeMotorSpeed. */
-  public IntakeMotorSpeed() {
+  public IntakeMotorSpeed(double speed, IntakeSubsytem intake) {
+    this.intake = intake;
+    this.speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    intake.setIntakeMotorSpeed(speed);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -22,8 +32,10 @@ public class IntakeMotorSpeed extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
-
+  public void end(boolean interrupted) {
+    intake.setIntakeMotorSpeed(0);
+  }
+  
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
