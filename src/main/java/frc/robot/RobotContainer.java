@@ -58,6 +58,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Shooting from Fender
+    /*
     new JoystickButton(joystick1, Button.kA.value)
         .whenPressed(
             new SequentialCommandGroup(
@@ -66,12 +67,12 @@ public class RobotContainer {
                 new WaitUntilCommand(shooter::isInTolerance),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
         .whenReleased(new ShooterSpeed(0, 0, shooter));
-
-    new JoystickButton(joystick1, Button.kLeftBumper.value)
+    */
+    new JoystickButton(joystick1, Button.kB.value)
         .whenPressed(
             new MoveClimber(ClimberConstants.reverseSpeed, climber));
 
-    new JoystickButton(joystick1, Button.kRightBumper.value)
+    new JoystickButton(joystick1, Button.kA.value)
         .whenPressed(
             new MoveClimber(ClimberConstants.forwardSpeed, climber));
   }
