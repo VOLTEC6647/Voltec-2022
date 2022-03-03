@@ -11,35 +11,46 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChasisConstants;
 
 public class ChassisSubsystem extends SubsystemBase {
-  WPI_TalonFX frontLeft = new WPI_TalonFX(ChasisConstants.frontLeftID);
-  WPI_TalonFX frontRight = new WPI_TalonFX(ChasisConstants.frontRightID);
-  WPI_TalonFX rearLeft = new WPI_TalonFX(ChasisConstants.rearLeftID);
-  WPI_TalonFX rearRight = new WPI_TalonFX(ChasisConstants.rearRightID);
-  DoubleSolenoid reduction  = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid, ChasisConstants.LowGearSolenoid);
-  DifferentialDrive chasis; 
+  private WPI_TalonFX frontLeft = new WPI_TalonFX(ChasisConstants.frontLeftID);
+  private WPI_TalonFX frontRight = new WPI_TalonFX(ChasisConstants.frontRightID);
+  private WPI_TalonFX rearLeft = new WPI_TalonFX(ChasisConstants.rearLeftID);
+  private WPI_TalonFX rearRight = new WPI_TalonFX(ChasisConstants.rearRightID);
+  private DoubleSolenoid reduction  = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid, ChasisConstants.LowGearSolenoid);
+  private DifferentialDrive chasis; 
+  private double leftSpeed, rightSpeed;
 
   /** Creates a new Chasis. */
   public ChassisSubsystem() {
     rearLeft.follow(frontLeft);
     rearRight.follow(frontRight);
-    frontLeft.setInverted(false);
-    frontRight.setInverted(true);
+    frontLeft.setInverted(true);
+    frontRight.setInverted(false);
     rearLeft.setInverted(InvertType.FollowMaster);
-    rearLeft.setInverted(InvertType.FollowMaster);
+    rearRight.setInverted(InvertType.FollowMaster);
     chasis = new DifferentialDrive(frontLeft, frontRight);
 
   }
-
+  //obtener error de los encoders a traves de la velocidad
+  public void publishData(){
+    SmartDashboard.putNumber("LeftSpeed", frontLeft.get());
+    SmartDashboard.putNumber("RightSpeed", frontRight.get());
+    SmartDashboard.putNumber("LeftSpeedN", leftSpeed);
+    SmartDashboard.putNumber("RightSpeedN", rightSpeed);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    publishData();
   }
 
   public void TankDrive(double leftSpeed, double rightSpeed){
+    this.leftSpeed = leftSpeed;
+    this.rightSpeed = rightSpeed;
     chasis.tankDrive(leftSpeed, rightSpeed);
 
   }

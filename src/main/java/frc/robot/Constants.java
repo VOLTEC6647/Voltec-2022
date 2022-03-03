@@ -18,10 +18,10 @@ package frc.robot;
  */
 public final class Constants {
     public static final class ChasisConstants{
-        public static final int frontLeftID = 7; 
-        public static final int frontRightID = 6;
-        public static final int rearLeftID = 9;
-        public static final int rearRightID = 8;
+        public static final int frontLeftID = 9; 
+        public static final int frontRightID = 8;
+        public static final int rearLeftID = 7;
+        public static final int rearRightID = 6;
         public static final int HighGearSolenoid = 0;
         public static final int LowGearSolenoid = 1;
     }
@@ -54,11 +54,11 @@ public final class Constants {
         public static final double counterSpinkIz = 0;
         public static final double counterSpinkFF = 1.5e-4;
 
-        public static int shooterFender = 2500;
-        public static int backSpinFender = 2500;
+        public static int shooterFender = 1900;
+        public static int backSpinFender = 1700;
         public static final int shooter1MeterFender = 3000;
         public static final int shooter1backSpinFender = 3000;
-        public static int velocityTolerance = 50;
+        public static int velocityTolerance = 25;
     }
 
     public static final class DeliveryConstants {
@@ -70,7 +70,7 @@ public final class Constants {
         public static final double deliverykIz = 0;
         public static final double deliverykFF = 0.0000;
 
-        public static double deliveryRot = 2;
+        public static double deliveryRot = 4;
         public static double errorTolerance = .2;
 
     }

@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -53,7 +52,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    chassis.setDefaultCommand(new ChassisTankDriveControl(chassis, joystick1.getLeftY(), joystick1.getRightY()));
+    chassis.setDefaultCommand( new RunCommand(() ->
+    chassis.TankDrive(joystick1.getLeftY(), joystick1.getRightY()), chassis));
     configureButtonBindings();
   }
 
@@ -66,10 +66,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    final JoystickButton dpadUp = new JoystickButton(joystick1, 5);
-    final JoystickButton dpadRight = new JoystickButton(joystick1, 6);
-    final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
-    final JoystickButton dpadLeft = new JoystickButton(joystick1, 8);
+    // final JoystickButton dpadUp = new JoystickButton(joystick1, 5);
+    // final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
     // Shooting from Fender
     new JoystickButton(joystick1, Button.kA.value)
         .whenHeld(
@@ -80,11 +78,11 @@ public class RobotContainer {
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
         .whenReleased(new ShooterSpeed(0, 0, shooter));
 
-    dpadDown.whenPressed(
-        new MoveClimber(ClimberConstants.reverseSpeed, climber));
+    //dpadDown.whenPressed(
+        //new MoveClimber(ClimberConstants.reverseSpeed, climber));
 
-    dpadUp.whenPressed(
-        new MoveClimber(ClimberConstants.forwardSpeed, climber));
+    //dpadUp.whenPressed(
+        //new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
     new JoystickButton(joystick1, Button.kB.value)
       .whenPressed(() -> chassis.toggleReduccion());
