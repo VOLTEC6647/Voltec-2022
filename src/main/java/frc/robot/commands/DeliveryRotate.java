@@ -25,6 +25,7 @@ public class DeliveryRotate extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    delivery.resetEncoder();
     delivery.setDeliveryRotation(rotation);
   }
     // Called every time the scheduler runs while the command is scheduled.
@@ -35,11 +36,12 @@ public class DeliveryRotate extends CommandBase {
     @Override
     public void end(boolean interrupted) {
       delivery.stopRotation();
+      delivery.resetEncoder();
     }
   
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-      return delivery.deliveryError()<DeliveryConstants.errorTolerance;
+      return delivery.deliveryError() < DeliveryConstants.errorTolerance;
     }
 }

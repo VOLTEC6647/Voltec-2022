@@ -5,8 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.DeliveryConstants;
+import frc.robot.Constants.ShooterConstants;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -28,6 +31,11 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    SmartDashboard.putNumber("ShooterSetpoint", ShooterConstants.shooterFender);
+    SmartDashboard.putNumber("CSpinSetpoint", ShooterConstants.backSpinFender);
+    SmartDashboard.putNumber("DeliverySetpoint", DeliveryConstants.deliveryRot);
+    SmartDashboard.putNumber("ShooterError", ShooterConstants.velocityTolerance);
+    SmartDashboard.putNumber("DeliveryError", DeliveryConstants.errorTolerance);
   }
 
   /**
@@ -44,6 +52,12 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    ShooterConstants.shooterFender = (int)SmartDashboard.getNumber("ShooterSetpoint", 0);
+    ShooterConstants.backSpinFender = (int)SmartDashboard.getNumber("CSpinSetpoint", 0);
+    DeliveryConstants.deliveryRot = SmartDashboard.getNumber("DeliverySetpoint", 0);
+    ShooterConstants.velocityTolerance = (int)SmartDashboard.getNumber("ShooterError", 0);
+    DeliveryConstants.deliveryRot = (int)SmartDashboard.getNumber("DeliveryError", 0);
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
