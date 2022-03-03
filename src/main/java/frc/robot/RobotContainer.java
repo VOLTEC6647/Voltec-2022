@@ -15,17 +15,17 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DeliveryRotate;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
+import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.ClimberSubSystem;
 import frc.robot.subsystems.DeliverySubsystem;
 import frc.robot.subsystems.IntakeSubsytem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.utils.AxisButton;
 import frc.robot.utils.XboxControllerUpgrade;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -45,11 +45,18 @@ public class RobotContainer {
 
   private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort);
 
+  private final ChassisSubsystem chassis = new ChassisSubsystem();
+
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
+    chassis.setDefaultCommand( new RunCommand(() ->
+    chassis.TankDrive(joystick1.getLeftY(), joystick1.getRightY()), chassis));
     configureButtonBindings();
   }
 
@@ -62,10 +69,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // final JoystickButton dpadUp = new JoystickButton(joystick1, 5);
+    // final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
     // Shooting from Fender
 
     new JoystickButton(joystick1, Button.kA.value)
-        .whenPressed(
+        .whenHeld(
             new SequentialCommandGroup(
                 new ShooterSpeed(ShooterConstants.shooterFender, ShooterConstants.backSpinFender, shooter),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
@@ -78,8 +87,10 @@ public class RobotContainer {
 
     joystick1.Dpad.Up.whenPressed(
         new MoveClimber(ClimberConstants.forwardSpeed, climber));
-  }
 
+    new JoystickButton(joystick1, Button.kB.value)
+      .whenPressed(() -> chassis.toggleReduccion());
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
