@@ -57,8 +57,8 @@ public final class Constants {
 
         public static int shooterFender = 1900;
         public static int backSpinFender = 1700;
-        public static final int shooter1MeterFender = 3000;
-        public static final int shooter1backSpinFender = 3000;
+        public static final int shooter1MeterFender = 2200;
+        public static final int shooter1backSpinFender = 1800;
         public static int velocityTolerance = 25;
     }
 
@@ -81,5 +81,8 @@ public final class Constants {
     }
     public static final class IntakeConstants{
         public static final int intakeMotorID = 1;
+        public static final double intakeSpeed = 0.8;
+        public static final int intakeIn = 2;
+        public static final int intakeOut = 3;
     }
 }

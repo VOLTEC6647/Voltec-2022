@@ -6,13 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DeliveryRotate;
+import frc.robot.commands.IntakeMotorSpeed;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
 import frc.robot.subsystems.ChassisSubsystem;
@@ -43,7 +43,7 @@ public class RobotContainer {
   private final IntakeSubsytem intake = new IntakeSubsytem();
   private final ClimberSubSystem climber = new ClimberSubSystem();
 
-  private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort);
+  private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort, 0.2);
 
   private final ChassisSubsystem chassis = new ChassisSubsystem();
 
@@ -82,14 +82,29 @@ public class RobotContainer {
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
         .whenReleased(new ShooterSpeed(0, 0, shooter));
 
+      new JoystickButton(joystick1, Button.kB.value)
+        .whenHeld(
+            new SequentialCommandGroup(
+                new ShooterSpeed(ShooterConstants.shooter1MeterFender, ShooterConstants.shooter1backSpinFender, shooter),
+                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
+                new WaitUntilCommand(shooter::isInTolerance),
+                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
+      .whenReleased(new ShooterSpeed(0, 0, shooter));
+      
     joystick1.Dpad.Down.whenPressed(
         new MoveClimber(ClimberConstants.reverseSpeed, climber));
 
     joystick1.Dpad.Up.whenPressed(
         new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
-    new JoystickButton(joystick1, Button.kB.value)
+    new JoystickButton(joystick1, Button.kY.value)
       .whenPressed(() -> chassis.toggleReduccion());
+
+      new JoystickButton(joystick1, Button.kX.value)
+      .whenPressed(() -> intake.toggleIntake());
+
+    joystick1.rightTriggerButton.whenPressed(new IntakeMotorSpeed(joystick1.getRightTriggerAxis(), intake));
+    joystick1.leftTriggerButton.whenPressed(new IntakeMotorSpeed(-joystick1.getRightTriggerAxis(), intake));
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

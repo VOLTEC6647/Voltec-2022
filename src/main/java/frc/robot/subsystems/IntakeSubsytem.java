@@ -7,22 +7,23 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants.IntakeConstants;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 
 public class IntakeSubsytem extends SubsystemBase {
   /** Creates a new IntakeSubsytem. */
   private static CANSparkMax intakeMotor = new CANSparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
+  private DoubleSolenoid intakePosition  = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.intakeIn, IntakeConstants.intakeOut);
 
-  
   
   public IntakeSubsytem() {
     intakeMotor.restoreFactoryDefaults();
-
-    
   }
-  
+  public void toggleIntake(){
+    intakePosition.toggle();
+  }
   public void setIntakeMotorSpeed(double speed) {
     intakeMotor.set(speed);
   }
