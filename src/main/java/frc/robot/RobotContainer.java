@@ -19,6 +19,8 @@ import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.ClimberSubSystem;
 import frc.robot.subsystems.DeliverySubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utils.AxisButton;
+import frc.robot.utils.XboxControllerUpgrade;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -40,7 +42,7 @@ public class RobotContainer {
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final ClimberSubSystem climber = new ClimberSubSystem();
 
-  private final XboxController joystick1 = new XboxController(OIConstants.KDriverControllerPort);
+  private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort);
 
   private final ChassisSubsystem chassis = new ChassisSubsystem();
 
@@ -69,6 +71,7 @@ public class RobotContainer {
     // final JoystickButton dpadUp = new JoystickButton(joystick1, 5);
     // final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
     // Shooting from Fender
+    
     new JoystickButton(joystick1, Button.kA.value)
         .whenHeld(
             new SequentialCommandGroup(
@@ -77,12 +80,13 @@ public class RobotContainer {
                 new WaitUntilCommand(shooter::isInTolerance),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
         .whenReleased(new ShooterSpeed(0, 0, shooter));
+    
+    joystick1.Dpad.Down.whenPressed(
+            new MoveClimber(ClimberConstants.reverseSpeed, climber));
+    
 
-    //dpadDown.whenPressed(
-        //new MoveClimber(ClimberConstants.reverseSpeed, climber));
-
-    //dpadUp.whenPressed(
-        //new MoveClimber(ClimberConstants.forwardSpeed, climber));
+    joystick1.Dpad.Up.whenPressed(
+            new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
     new JoystickButton(joystick1, Button.kB.value)
       .whenPressed(() -> chassis.toggleReduccion());
