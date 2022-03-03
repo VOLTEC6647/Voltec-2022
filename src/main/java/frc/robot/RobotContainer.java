@@ -14,10 +14,10 @@ import frc.robot.commands.DeliveryRotate;
 import frc.robot.commands.ShooterSpeed;
 import frc.robot.subsystems.DeliverySubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utils.AxisButton;
+import frc.robot.utils.XboxControllerUpgrade;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -32,7 +32,7 @@ public class RobotContainer {
   private final DeliverySubsystem delivery = new DeliverySubsystem();
   private final ShooterSubsystem shooter = new ShooterSubsystem();
 
-  private final XboxController joystick1 = new XboxController(OIConstants.KDriverControllerPort);
+  private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -58,6 +58,8 @@ public class RobotContainer {
           new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)
         )  
       ).whenReleased(new ShooterSpeed(0, 0, shooter));
+    
+
   }
 
   /**
