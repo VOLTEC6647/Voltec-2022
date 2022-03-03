@@ -17,8 +17,17 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final class ChasisConstants{
+        public static final int frontLeftID = 9; 
+        public static final int frontRightID = 8;
+        public static final int rearLeftID = 7;
+        public static final int rearRightID = 6;
+        public static final int HighGearSolenoid = 0;
+        public static final int LowGearSolenoid = 1;
+    }
+    
     public static final class ClimberConstants {
-        public static final int climberMotor = 0;
+        public static final int climberMotor = 4;
 
         //valores en 0 de forward limit y reverse limit
         public static final int forwardLimit = 160;
@@ -29,8 +38,8 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-        public static final int shooterID = 1;
-        public static final int counterSpinID = 4;
+        public static final int shooterID = 5;
+        public static final int counterSpinID = 2;
 
         // Shooter PID
         public static final double shooterkP = 5e-5;
@@ -46,15 +55,15 @@ public final class Constants {
         public static final double counterSpinkIz = 0;
         public static final double counterSpinkFF = 1.5e-4;
 
-        public static int shooterFender = 2500;
-        public static int backSpinFender = 2500;
-        public static final int shooter1MeterFender = 3000;
-        public static final int shooter1backSpinFender = 3000;
-        public static int velocityTolerance = 50;
+        public static int shooterFender = 1900;
+        public static int backSpinFender = 1700;
+        public static final int shooter1MeterFender = 2200;
+        public static final int shooter1backSpinFender = 1800;
+        public static int velocityTolerance = 25;
     }
 
     public static final class DeliveryConstants {
-        public static final int deliveryID = 5;
+        public static final int deliveryID = 3;
         // Delivery PID
         public static final double deliverykP = 1;
         public static final double deliverykI = 0;
@@ -62,12 +71,18 @@ public final class Constants {
         public static final double deliverykIz = 0;
         public static final double deliverykFF = 0.0000;
 
-        public static double deliveryRot = 2;
+        public static double deliveryRot = 4;
         public static double errorTolerance = .2;
 
     }
 
     public static final class OIConstants {
         public static final int KDriverControllerPort = 0;
+    }
+    public static final class IntakeConstants{
+        public static final int intakeMotorID = 1;
+        public static final double intakeSpeed = 0.8;
+        public static final int intakeIn = 2;
+        public static final int intakeOut = 3;
     }
 }
