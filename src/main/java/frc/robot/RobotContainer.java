@@ -17,6 +17,8 @@ import frc.robot.commands.ShooterSpeed;
 import frc.robot.subsystems.ClimberSubSystem;
 import frc.robot.subsystems.DeliverySubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utils.AxisButton;
+import frc.robot.utils.XboxControllerUpgrade;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -38,7 +40,7 @@ public class RobotContainer {
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final ClimberSubSystem climber = new ClimberSubSystem();
 
-  private final XboxController joystick1 = new XboxController(OIConstants.KDriverControllerPort);
+  private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -71,9 +73,9 @@ public class RobotContainer {
     new JoystickButton(joystick1, Button.kB.value)
         .whenPressed(
             new MoveClimber(ClimberConstants.reverseSpeed, climber));
+    
 
-    new JoystickButton(joystick1, Button.kA.value)
-        .whenPressed(
+    new JoystickButton(joystick1, Button.kA.value).whenPressed(
             new MoveClimber(ClimberConstants.forwardSpeed, climber));
   }
 
