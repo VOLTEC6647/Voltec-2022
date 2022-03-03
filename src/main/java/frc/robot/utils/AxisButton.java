@@ -32,11 +32,6 @@ public class AxisButton extends Button {
         this(joystick, axis.value, threshold, thresholdType);
     }
 
-    public double getAxis(int a){
-        return -1;
-        //Build this out so that if it's x or y or it flips it
-    }
-
 
     public boolean get() {
         switch (this.thresholdType) {
