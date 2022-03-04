@@ -11,7 +11,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class ClimberSubSystem extends SubsystemBase 
 {
-  CANSparkMax climberM = new CANSparkMax(ClimberConstants.climberMotor, MotorType.kBrushless);
+  private CANSparkMax climberM = new CANSparkMax(ClimberConstants.climberMotor, MotorType.kBrushless);
+  private RelativeEncoder climberEncoder;
 
   public ClimberSubSystem() 
   {
@@ -19,12 +20,17 @@ public class ClimberSubSystem extends SubsystemBase
 
     climberM.setSoftLimit(SoftLimitDirection.kForward, ClimberConstants.forwardLimit);
     climberM.setSoftLimit(SoftLimitDirection.kReverse, ClimberConstants.reverseLimit);
+    climberEncoder = climberM.getEncoder();
+  }
+  
+  public void publishData(){
+    SmartDashboard.putNumber("ClimberPosition", shooterEncoder.getPosition());
   }
 
   @Override
   public void periodic() 
   {
-  
+    publishData()
   }
 
   public void setClimberPercentage(double percentage) 
