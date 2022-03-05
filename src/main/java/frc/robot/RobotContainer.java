@@ -90,12 +90,13 @@ public class RobotContainer {
                 new WaitUntilCommand(shooter::isInTolerance),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
       .whenReleased(new ShooterSpeed(0, 0, shooter));
-      
-    joystick1.Dpad.Down.whenPressed(
-        new MoveClimber(ClimberConstants.reverseSpeed, climber));
 
-    joystick1.Dpad.Up.whenPressed(
-        new MoveClimber(ClimberConstants.forwardSpeed, climber));
+    joystick1.Dpad.Down.whileHeld(
+            new MoveClimber(ClimberConstants.reverseSpeed, climber));
+    
+
+    joystick1.Dpad.Up.whileHeld(
+            new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
     new JoystickButton(joystick1, Button.kY.value)
       .whenPressed(() -> chassis.toggleReduccion());
