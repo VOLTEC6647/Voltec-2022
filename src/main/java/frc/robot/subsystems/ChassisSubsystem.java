@@ -8,8 +8,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,16 +20,19 @@ public class ChassisSubsystem extends SubsystemBase {
   private WPI_TalonFX frontRight = new WPI_TalonFX(ChasisConstants.frontRightID);
   private WPI_TalonFX rearLeft = new WPI_TalonFX(ChasisConstants.rearLeftID);
   private WPI_TalonFX rearRight = new WPI_TalonFX(ChasisConstants.rearRightID);
-  private DoubleSolenoid reduction  = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid, ChasisConstants.LowGearSolenoid);
+  // private DoubleSolenoid reduction  = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid, ChasisConstants.LowGearSolenoid);
   private DifferentialDrive chasis; 
   private double leftSpeed, rightSpeed;
+  private Solenoid forwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid);
+  private Solenoid backwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.LowGearSolenoid);
+  
 
   /** Creates a new Chasis. */
   public ChassisSubsystem() {
     rearLeft.follow(frontLeft);
     rearRight.follow(frontRight);
-    frontLeft.setInverted(true);
-    frontRight.setInverted(false);
+    frontLeft.setInverted(false);
+    frontRight.setInverted(true);
     rearLeft.setInverted(InvertType.FollowMaster);
     rearRight.setInverted(InvertType.FollowMaster);
     chasis = new DifferentialDrive(frontLeft, frontRight);
@@ -59,6 +62,13 @@ public class ChassisSubsystem extends SubsystemBase {
     chasis.arcadeDrive(linearSpeed, rotSpeed);
   }
   public void toggleReduccion(){
-    reduction.toggle();
+    if (forwardSolenoid.get()) {
+      forwardSolenoid.set(false);
+      backwardSolenoid.set(true);
+
+    }else {
+      forwardSolenoid.set(true);
+      backwardSolenoid.set(false);    
+    }
   }
 }

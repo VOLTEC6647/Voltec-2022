@@ -30,7 +30,7 @@ public final class Constants {
         public static final int climberMotor = 4;
 
         //valores en 0 de forward limit y reverse limit
-        public static final int forwardLimit = 160;
+        public static final int forwardLimit = 165;
         public static final int reverseLimit = 10;
 
         public static final double forwardSpeed = .8;

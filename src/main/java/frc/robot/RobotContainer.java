@@ -12,7 +12,6 @@ import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DeliveryRotate;
-import frc.robot.commands.IntakeMotorSpeed;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
 import frc.robot.subsystems.ChassisSubsystem;
@@ -22,8 +21,10 @@ import frc.robot.subsystems.IntakeSubsytem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.XboxControllerUpgrade;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -55,8 +56,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    chassis.setDefaultCommand( new RunCommand(() ->
-    chassis.TankDrive(joystick1.getLeftY(), joystick1.getRightY()), chassis));
+    chassis.setDefaultCommand(
+        new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
     configureButtonBindings();
   }
 
@@ -82,31 +83,42 @@ public class RobotContainer {
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
         .whenReleased(new ShooterSpeed(0, 0, shooter));
 
-      new JoystickButton(joystick1, Button.kB.value)
+    new JoystickButton(joystick1, Button.kB.value)
         .whenHeld(
             new SequentialCommandGroup(
-                new ShooterSpeed(ShooterConstants.shooter1MeterFender, ShooterConstants.shooter1backSpinFender, shooter),
+                new ShooterSpeed(ShooterConstants.shooter1MeterFender, ShooterConstants.shooter1backSpinFender,
+                    shooter),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
                 new WaitUntilCommand(shooter::isInTolerance),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
-      .whenReleased(new ShooterSpeed(0, 0, shooter));
+        .whenReleased(new ShooterSpeed(0, 0, shooter));
 
     joystick1.Dpad.Down.whileHeld(
-            new MoveClimber(ClimberConstants.reverseSpeed, climber));
-    
+        new MoveClimber(ClimberConstants.reverseSpeed, climber));
 
     joystick1.Dpad.Up.whileHeld(
-            new MoveClimber(ClimberConstants.forwardSpeed, climber));
+        new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
     new JoystickButton(joystick1, Button.kY.value)
-      .whenPressed(() -> chassis.toggleReduccion());
+        .whenPressed(new InstantCommand(() -> chassis.toggleReduccion()));
 
-      new JoystickButton(joystick1, Button.kX.value)
-      .whenPressed(() -> intake.toggleIntake());
+    new JoystickButton(joystick1, Button.kX.value)
+        .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
 
-    joystick1.rightTriggerButton.whenPressed(new IntakeMotorSpeed(joystick1.getRightTriggerAxis(), intake));
-    joystick1.leftTriggerButton.whenPressed(new IntakeMotorSpeed(-joystick1.getRightTriggerAxis(), intake));
+    joystick1.rightTriggerButton.whileHeld(
+        new StartEndCommand(
+            () -> intake.setIntakeMotorSpeed(1),
+            () -> intake.setIntakeMotorSpeed(0),
+            intake));
+
+    joystick1.leftTriggerButton.whileHeld(
+        new StartEndCommand(
+            () -> intake.setIntakeMotorSpeed(-1),
+            () -> intake.setIntakeMotorSpeed(0),
+            intake));
+
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -116,10 +128,12 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return new DeliveryRotate(0, delivery);
   }
-  public double getTrigger(){
-    return joystick1.getRightTriggerAxis();
+
+  public double getTrigger() {
+    return joystick1.getLeftTriggerAxis();
   }
-  public boolean isTrigger(){
-    return joystick1.rightTriggerButton.get();
+
+  public boolean isTrigger() {
+    return joystick1.leftTriggerButton.get();
   }
 }
