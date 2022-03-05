@@ -22,6 +22,10 @@ public class ClimberSubSystem extends SubsystemBase
 
     climberM.setSoftLimit(SoftLimitDirection.kForward, ClimberConstants.forwardLimit);
     climberM.setSoftLimit(SoftLimitDirection.kReverse, ClimberConstants.reverseLimit);
+    climberM.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    climberM.enableSoftLimit(SoftLimitDirection.kForward, true);
+
+
     climberEncoder = climberM.getEncoder();
   }
   

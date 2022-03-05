@@ -116,4 +116,10 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return new DeliveryRotate(0, delivery);
   }
+  public double getTrigger(){
+    return joystick1.getRightTriggerAxis();
+  }
+  public boolean isTrigger(){
+    return joystick1.rightTriggerButton.get();
+  }
 }

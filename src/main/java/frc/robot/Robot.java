@@ -57,7 +57,8 @@ public class Robot extends TimedRobot {
     DeliveryConstants.deliveryRot = SmartDashboard.getNumber("DeliverySetpoint", 0);
     ShooterConstants.velocityTolerance = (int)SmartDashboard.getNumber("ShooterError", 0);
     DeliveryConstants.deliveryRot = (int)SmartDashboard.getNumber("DeliveryError", 0);
-
+    SmartDashboard.putNumber("Trigger", m_robotContainer.getTrigger());
+    SmartDashboard.putBoolean("isTrigger", m_robotContainer.isTrigger());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
