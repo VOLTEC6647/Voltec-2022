@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.json.JSONReader;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -30,7 +31,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+	JSONReader.createInstance("Profiles");
     m_robotContainer = new RobotContainer();
+	
     SmartDashboard.putNumber("ShooterSetpoint", ShooterConstants.shooterFender);
     SmartDashboard.putNumber("CSpinSetpoint", ShooterConstants.backSpinFender);
     SmartDashboard.putNumber("DeliverySetpoint", DeliveryConstants.deliveryRot);
@@ -57,8 +60,6 @@ public class Robot extends TimedRobot {
     DeliveryConstants.deliveryRot = SmartDashboard.getNumber("DeliverySetpoint", 0);
     ShooterConstants.velocityTolerance = (int)SmartDashboard.getNumber("ShooterError", 0);
     DeliveryConstants.deliveryRot = (int)SmartDashboard.getNumber("DeliveryError", 0);
-    SmartDashboard.putNumber("Trigger", m_robotContainer.getTrigger());
-    SmartDashboard.putBoolean("isTrigger", m_robotContainer.isTrigger());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

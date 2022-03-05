@@ -1,7 +1,7 @@
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.utils.AxisButton.*;
+import frc.robot.utils.AxisButton.ThresholdType;
 
 /**
  * XboxControllerUpgrade

@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2022.3.1"
+    id "edu.wpi.first.GradleRIO" version "2022.4.1"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -64,6 +64,16 @@ dependencies {
     nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
+
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.13.1"
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    implementation group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.13.1"
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+    implementation group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.13.1"
+	
+	// https://mvnrepository.com/artifact/net.jafama/jafama
+	implementation group: 'net.jafama', name: 'jafama', version: '2.3.2'
 
     testImplementation 'junit:junit:4.12'
 }
