@@ -56,8 +56,11 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+    // chassis.setDefaultCommand(
+    //     new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
+    // configureButtonBindings();
     chassis.setDefaultCommand(
-        new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
+        new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), joystick1.getRightX()), chassis));
     configureButtonBindings();
   }
 
