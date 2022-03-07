@@ -44,6 +44,10 @@ public class ChassisSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RightSpeed", frontRight.get());
     SmartDashboard.putNumber("LeftSpeedN", leftSpeed);
     SmartDashboard.putNumber("RightSpeedN", rightSpeed);
+    SmartDashboard.putNumber("RightEncoderFront", frontRight.getSelectedSensorPosition());
+    SmartDashboard.putNumber("LeftEncoderFront", frontLeft.getSelectedSensorPosition());
+    SmartDashboard.putNumber("RightEncoderBack", rearRight.getSelectedSensorPosition());
+    SmartDashboard.putNumber("LeftEncoderBack", rearLeft.getSelectedSensorPosition());
   }
   @Override
   public void periodic() {
@@ -59,7 +63,7 @@ public class ChassisSubsystem extends SubsystemBase {
   }
 
   public void ArcadeDrive(double linearSpeed, double rotSpeed){
-    chasis.arcadeDrive(linearSpeed, rotSpeed);
+    chasis.arcadeDrive(linearSpeed*0.5, rotSpeed*0.5);
   }
   public void toggleReduccion(){
     if (forwardSolenoid.get()) {
@@ -71,4 +75,6 @@ public class ChassisSubsystem extends SubsystemBase {
       backwardSolenoid.set(false);    
     }
   }
+
+  
 }

@@ -18,10 +18,10 @@ package frc.robot;
  */
 public final class Constants {
     public static final class ChasisConstants{
-        public static final int frontLeftID = 9; 
-        public static final int frontRightID = 8;
-        public static final int rearLeftID = 7;
-        public static final int rearRightID = 6;
+        public static final int frontLeftID = 8; 
+        public static final int frontRightID = 9;
+        public static final int rearLeftID = 6;
+        public static final int rearRightID = 1;
         public static final int HighGearSolenoid = 0;
         public static final int LowGearSolenoid = 1;
     }
@@ -78,6 +78,7 @@ public final class Constants {
 
     public static final class OIConstants {
         public static final int KDriverControllerPort = 0;
+        public static final int KDriverControllerPort1 = 1;
     }
     public static final class IntakeConstants{
         public static final int intakeMotorID = 1;

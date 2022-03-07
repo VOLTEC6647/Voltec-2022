@@ -44,9 +44,13 @@ public class RobotContainer {
   private final IntakeSubsytem intake = new IntakeSubsytem();
   private final ClimberSubSystem climber = new ClimberSubSystem();
 
+  
+
   private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort, 0.2);
+  private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort1, 0.2);
 
   private final ChassisSubsystem chassis = new ChassisSubsystem();
+  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -62,6 +66,7 @@ public class RobotContainer {
     chassis.setDefaultCommand(
         new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), joystick1.getRightX()), chassis));
     configureButtonBindings();
+
   }
 
   /**
@@ -77,7 +82,7 @@ public class RobotContainer {
     // final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
     // Shooting from Fender
 
-    new JoystickButton(joystick1, Button.kA.value)
+    new JoystickButton(joystick2, Button.kA.value)
         .whenHeld(
             new SequentialCommandGroup(
                 new ShooterSpeed(ShooterConstants.shooterFender, ShooterConstants.backSpinFender, shooter),
@@ -86,7 +91,7 @@ public class RobotContainer {
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
         .whenReleased(new ShooterSpeed(0, 0, shooter));
 
-    new JoystickButton(joystick1, Button.kB.value)
+    new JoystickButton(joystick2, Button.kB.value)
         .whenHeld(
             new SequentialCommandGroup(
                 new ShooterSpeed(ShooterConstants.shooter1MeterFender, ShooterConstants.shooter1backSpinFender,
@@ -105,16 +110,16 @@ public class RobotContainer {
     new JoystickButton(joystick1, Button.kY.value)
         .whenPressed(new InstantCommand(() -> chassis.toggleReduccion()));
 
-    new JoystickButton(joystick1, Button.kX.value)
+    new JoystickButton(joystick2, Button.kX.value)
         .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
 
-    joystick1.rightTriggerButton.whileHeld(
+    joystick2.rightTriggerButton.whileHeld(
         new StartEndCommand(
             () -> intake.setIntakeMotorSpeed(1),
             () -> intake.setIntakeMotorSpeed(0),
             intake));
 
-    joystick1.leftTriggerButton.whileHeld(
+    joystick2.leftTriggerButton.whileHeld(
         new StartEndCommand(
             () -> intake.setIntakeMotorSpeed(-1),
             () -> intake.setIntakeMotorSpeed(0),
@@ -133,10 +138,10 @@ public class RobotContainer {
   }
 
   public double getTrigger() {
-    return joystick1.getLeftTriggerAxis();
+    return joystick2.getLeftTriggerAxis();
   }
 
   public boolean isTrigger() {
-    return joystick1.leftTriggerButton.get();
+    return joystick2.leftTriggerButton.get();
   }
 }

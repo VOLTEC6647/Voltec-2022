@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DeliveryConstants;
 
@@ -65,9 +66,14 @@ public class DeliverySubsystem extends SubsystemBase {
     return Math.abs(setPoint-deliveryEncoder.getPosition());
   }
 
+  public void publishData(){
+    SmartDashboard.putNumber("Indexer position", deliveryEncoder.getPosition());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    publishData();
   }
 
 }
