@@ -85,4 +85,9 @@ public final class Constants {
         public static final int intakeIn = 2;
         public static final int intakeOut = 3;
     }
+
+    public static final class LedConstants
+    {
+        public static final int PWMPort = 1; //Not Final, CHANGE
+    }
 }
