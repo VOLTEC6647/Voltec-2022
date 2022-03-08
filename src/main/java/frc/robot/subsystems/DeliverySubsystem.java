@@ -64,7 +64,9 @@ public class DeliverySubsystem extends SubsystemBase {
   public double deliveryError(){
     return Math.abs(setPoint-deliveryEncoder.getPosition());
   }
-
+  public void setSpeed(double speed){
+    delivery.set(speed);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

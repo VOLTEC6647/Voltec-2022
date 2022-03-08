@@ -11,6 +11,7 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.DeliveryEnable;
 import frc.robot.commands.DeliveryRotate;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
@@ -45,6 +46,7 @@ public class RobotContainer {
   private final ClimberSubSystem climber = new ClimberSubSystem();
 
   private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort, 0.2);
+  private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(1,0.2);
 
   private final ChassisSubsystem chassis = new ChassisSubsystem();
 
@@ -56,12 +58,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    // chassis.setDefaultCommand(
-    //     new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
-    // configureButtonBindings();
-    chassis.setDefaultCommand(
+     chassis.setDefaultCommand(
+         new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
+     configureButtonBindings();
+    /*chassis.setDefaultCommand(
         new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), joystick1.getRightX()), chassis));
-    configureButtonBindings();
+    configureButtonBindings();*/
   }
 
   /**
@@ -77,46 +79,43 @@ public class RobotContainer {
     // final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
     // Shooting from Fender
 
-    new JoystickButton(joystick1, Button.kA.value)
-        .whenHeld(
+    new JoystickButton(joystick2, Button.kA.value)
+        .whileHeld(
             new SequentialCommandGroup(
-                new ShooterSpeed(ShooterConstants.shooterFender, ShooterConstants.backSpinFender, shooter),
-                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
-                new WaitUntilCommand(shooter::isInTolerance),
-                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
-        .whenReleased(new ShooterSpeed(0, 0, shooter));
-
-    new JoystickButton(joystick1, Button.kB.value)
-        .whenHeld(
-            new SequentialCommandGroup(
-                new ShooterSpeed(ShooterConstants.shooter1MeterFender, ShooterConstants.shooter1backSpinFender,
+                new ShooterSpeed(ShooterConstants.shooterFender, 0,
                     shooter),
-                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
-                new WaitUntilCommand(shooter::isInTolerance),
-                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
+                new DeliveryEnable(0.6, delivery)))
         .whenReleased(new ShooterSpeed(0, 0, shooter));
 
-    joystick1.Dpad.Down.whileHeld(
+    new JoystickButton(joystick2, Button.kB.value)
+        .whileHeld(
+            new SequentialCommandGroup(
+                new ShooterSpeed(ShooterConstants.shooter1MeterFender, 0,
+                    shooter),
+                new DeliveryEnable(0.6, delivery)))
+        .whenReleased(new ShooterSpeed(0, 0, shooter));
+
+    joystick2.Dpad.Down.whileHeld(
         new MoveClimber(ClimberConstants.reverseSpeed, climber));
 
-    joystick1.Dpad.Up.whileHeld(
+    joystick2.Dpad.Up.whileHeld(
         new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
     new JoystickButton(joystick1, Button.kY.value)
         .whenPressed(new InstantCommand(() -> chassis.toggleReduccion()));
 
-    new JoystickButton(joystick1, Button.kX.value)
+    new JoystickButton(joystick2, Button.kX.value)
         .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
 
-    joystick1.rightTriggerButton.whileHeld(
+    joystick2.rightTriggerButton.whileHeld(
         new StartEndCommand(
-            () -> intake.setIntakeMotorSpeed(1),
+            () -> intake.setIntakeMotorSpeed(.5),
             () -> intake.setIntakeMotorSpeed(0),
             intake));
 
-    joystick1.leftTriggerButton.whileHeld(
+    joystick2.leftTriggerButton.whileHeld(
         new StartEndCommand(
-            () -> intake.setIntakeMotorSpeed(-1),
+            () -> intake.setIntakeMotorSpeed(-.5),
             () -> intake.setIntakeMotorSpeed(0),
             intake));
 
