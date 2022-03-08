@@ -31,8 +31,8 @@ public class ChassisSubsystem extends SubsystemBase {
   public ChassisSubsystem() {
     rearLeft.follow(frontLeft);
     rearRight.follow(frontRight);
-    frontLeft.setInverted(false);
-    frontRight.setInverted(true);
+    frontLeft.setInverted(true);
+    frontRight.setInverted(false);
     rearLeft.setInverted(InvertType.FollowMaster);
     rearRight.setInverted(InvertType.FollowMaster);
     chasis = new DifferentialDrive(frontLeft, frontRight);
