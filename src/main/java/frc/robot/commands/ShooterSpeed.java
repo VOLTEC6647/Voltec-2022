@@ -13,12 +13,11 @@ import frc.robot.subsystems.ShooterSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ShooterSpeed extends CommandBase {
   private final ShooterSubsystem shooter;
-  private int shooterSpeed, cSpinSpeed;
+  private int shooterSpeed;
   
-  public ShooterSpeed(int shooterSpeed, int cSpinSpeed, ShooterSubsystem shooter) {
+  public ShooterSpeed(int shooterSpeed, ShooterSubsystem shooter) {
     this.shooter = shooter;
     this.shooterSpeed = shooterSpeed;
-    this.cSpinSpeed = cSpinSpeed;
     /*shooterSpeed=ShooterConstants.shooterFender;
     cSpinSpeed = ShooterConstants.backSpinFender;*/
     addRequirements(shooter);
@@ -29,7 +28,6 @@ public class ShooterSpeed extends CommandBase {
   @Override
   public void initialize() {
     shooter.setShooterVelocity(shooterSpeed);
-    shooter.setCSpinVelocity(cSpinSpeed);
   }
   
   // Called every time the scheduler runs while the command is scheduled.

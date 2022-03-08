@@ -64,7 +64,7 @@ public class RobotContainer {
     //     new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
     // configureButtonBindings();
     chassis.setDefaultCommand(
-        new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), joystick1.getRightX()), chassis));
+        new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), -joystick1.getRightX()), chassis));
     configureButtonBindings();
 
   }
@@ -85,21 +85,21 @@ public class RobotContainer {
     new JoystickButton(joystick2, Button.kA.value)
         .whenHeld(
             new SequentialCommandGroup(
-                new ShooterSpeed(ShooterConstants.shooterFender, ShooterConstants.backSpinFender, shooter),
+                new ShooterSpeed(ShooterConstants.shooterFender, shooter),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
                 new WaitUntilCommand(shooter::isInTolerance),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
-        .whenReleased(new ShooterSpeed(0, 0, shooter));
+        .whenReleased(new ShooterSpeed(0, shooter));
 
     new JoystickButton(joystick2, Button.kB.value)
         .whenHeld(
             new SequentialCommandGroup(
-                new ShooterSpeed(ShooterConstants.shooter1MeterFender, ShooterConstants.shooter1backSpinFender,
+                new ShooterSpeed(ShooterConstants.shooter1MeterFender,
                     shooter),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
                 new WaitUntilCommand(shooter::isInTolerance),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
-        .whenReleased(new ShooterSpeed(0, 0, shooter));
+        .whenReleased(new ShooterSpeed(0, shooter));
 
     joystick1.Dpad.Down.whileHeld(
         new MoveClimber(ClimberConstants.reverseSpeed, climber));

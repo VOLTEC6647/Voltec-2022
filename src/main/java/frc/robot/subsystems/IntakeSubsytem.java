@@ -38,7 +38,7 @@ public class IntakeSubsytem extends SubsystemBase {
     }
   }
   public void setIntakeMotorSpeed(double speed) {
-    intakeMotor.set(speed);
+    intakeMotor.set(speed*0.5);
   }
 
   // public void publishData(){
