@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.ClimberConstants;
-// import frc.robot.Constants.DeliveryConstants;
+import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DeliveryEnable;
@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-// import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -48,7 +48,11 @@ public class RobotContainer {
   
 
   private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort, 0.2);
+<<<<<<< HEAD
+  private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort1, 0.2);
+=======
   private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(1,0.2);
+>>>>>>> refs/remotes/origin/main
 
   private final ChassisSubsystem chassis = new ChassisSubsystem();
   
@@ -61,12 +65,22 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+<<<<<<< HEAD
+    // chassis.setDefaultCommand(
+    //     new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
+    // configureButtonBindings();
+    chassis.setDefaultCommand(
+        new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), -joystick1.getRightX()), chassis));
+    configureButtonBindings();
+
+=======
      chassis.setDefaultCommand(
          new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
      configureButtonBindings();
     /*chassis.setDefaultCommand(
         new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), joystick1.getRightX()), chassis));
     configureButtonBindings();*/
+>>>>>>> refs/remotes/origin/main
   }
 
   /**
@@ -83,20 +97,40 @@ public class RobotContainer {
     // Shooting from Fender
 
     new JoystickButton(joystick2, Button.kA.value)
+<<<<<<< HEAD
+        .whenHeld(
+            new SequentialCommandGroup(
+                new ShooterSpeed(ShooterConstants.shooterFender, shooter),
+                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
+                new WaitUntilCommand(shooter::isInTolerance),
+                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
+        .whenReleased(new ShooterSpeed(0, shooter));
+
+    new JoystickButton(joystick2, Button.kB.value)
+        .whenHeld(
+            new SequentialCommandGroup(
+                new ShooterSpeed(ShooterConstants.shooter1MeterFender,
+                    shooter),
+                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery),
+                new WaitUntilCommand(shooter::isInTolerance),
+                new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
+        .whenReleased(new ShooterSpeed(0, shooter));
+=======
         .whileHeld(
             new SequentialCommandGroup(
-                new ShooterSpeed(ShooterConstants.shooterFender,
+                new ShooterSpeed(ShooterConstants.shooterFender, 0,
                     shooter),
                 new DeliveryEnable(0.6, delivery)))
-        .whenReleased(new ShooterSpeed(0, shooter));
+        .whenReleased(new ShooterSpeed(0, 0, shooter));
+>>>>>>> refs/remotes/origin/main
 
     new JoystickButton(joystick2, Button.kB.value)
         .whileHeld(
             new SequentialCommandGroup(
-                new ShooterSpeed(ShooterConstants.shooter1MeterFender,
+                new ShooterSpeed(ShooterConstants.shooter1MeterFender, 0,
                     shooter),
                 new DeliveryEnable(0.6, delivery)))
-        .whenReleased(new ShooterSpeed(0, shooter));
+        .whenReleased(new ShooterSpeed(0, 0, shooter));
 
     joystick2.Dpad.Down.whileHeld(
         new MoveClimber(ClimberConstants.reverseSpeed, climber));
