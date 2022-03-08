@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("DeliverySetpoint", DeliveryConstants.deliveryRot);
     SmartDashboard.putNumber("ShooterError", ShooterConstants.velocityTolerance);
     SmartDashboard.putNumber("DeliveryError", DeliveryConstants.errorTolerance);
+    CameraServer.startAutomaticCapture();
   }
 
   /**

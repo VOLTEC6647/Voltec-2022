@@ -11,6 +11,7 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.DeliveryEnable;
 import frc.robot.commands.DeliveryRotate;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
@@ -47,7 +48,11 @@ public class RobotContainer {
   
 
   private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort, 0.2);
+<<<<<<< HEAD
   private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort1, 0.2);
+=======
+  private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(1,0.2);
+>>>>>>> refs/remotes/origin/main
 
   private final ChassisSubsystem chassis = new ChassisSubsystem();
   
@@ -60,6 +65,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+<<<<<<< HEAD
     // chassis.setDefaultCommand(
     //     new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
     // configureButtonBindings();
@@ -67,6 +73,14 @@ public class RobotContainer {
         new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), -joystick1.getRightX()), chassis));
     configureButtonBindings();
 
+=======
+     chassis.setDefaultCommand(
+         new RunCommand(() -> chassis.TankDrive(joystick1.getRightY(), joystick1.getLeftY()), chassis));
+     configureButtonBindings();
+    /*chassis.setDefaultCommand(
+        new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), joystick1.getRightX()), chassis));
+    configureButtonBindings();*/
+>>>>>>> refs/remotes/origin/main
   }
 
   /**
@@ -83,6 +97,7 @@ public class RobotContainer {
     // Shooting from Fender
 
     new JoystickButton(joystick2, Button.kA.value)
+<<<<<<< HEAD
         .whenHeld(
             new SequentialCommandGroup(
                 new ShooterSpeed(ShooterConstants.shooterFender, shooter),
@@ -100,11 +115,27 @@ public class RobotContainer {
                 new WaitUntilCommand(shooter::isInTolerance),
                 new DeliveryRotate(DeliveryConstants.deliveryRot, delivery)))
         .whenReleased(new ShooterSpeed(0, shooter));
+=======
+        .whileHeld(
+            new SequentialCommandGroup(
+                new ShooterSpeed(ShooterConstants.shooterFender, 0,
+                    shooter),
+                new DeliveryEnable(0.6, delivery)))
+        .whenReleased(new ShooterSpeed(0, 0, shooter));
+>>>>>>> refs/remotes/origin/main
 
-    joystick1.Dpad.Down.whileHeld(
+    new JoystickButton(joystick2, Button.kB.value)
+        .whileHeld(
+            new SequentialCommandGroup(
+                new ShooterSpeed(ShooterConstants.shooter1MeterFender, 0,
+                    shooter),
+                new DeliveryEnable(0.6, delivery)))
+        .whenReleased(new ShooterSpeed(0, 0, shooter));
+
+    joystick2.Dpad.Down.whileHeld(
         new MoveClimber(ClimberConstants.reverseSpeed, climber));
 
-    joystick1.Dpad.Up.whileHeld(
+    joystick2.Dpad.Up.whileHeld(
         new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
     new JoystickButton(joystick1, Button.kY.value)
@@ -115,13 +146,13 @@ public class RobotContainer {
 
     joystick2.rightTriggerButton.whileHeld(
         new StartEndCommand(
-            () -> intake.setIntakeMotorSpeed(1),
+            () -> intake.setIntakeMotorSpeed(.5),
             () -> intake.setIntakeMotorSpeed(0),
             intake));
 
     joystick2.leftTriggerButton.whileHeld(
         new StartEndCommand(
-            () -> intake.setIntakeMotorSpeed(-1),
+            () -> intake.setIntakeMotorSpeed(-.5),
             () -> intake.setIntakeMotorSpeed(0),
             intake));
 

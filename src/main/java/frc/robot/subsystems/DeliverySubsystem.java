@@ -65,11 +65,17 @@ public class DeliverySubsystem extends SubsystemBase {
   public double deliveryError(){
     return Math.abs(setPoint-deliveryEncoder.getPosition());
   }
+<<<<<<< HEAD
 
   public void publishData(){
     SmartDashboard.putNumber("Indexer position", deliveryEncoder.getPosition());
   }
 
+=======
+  public void setSpeed(double speed){
+    delivery.set(speed);
+  }
+>>>>>>> refs/remotes/origin/main
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

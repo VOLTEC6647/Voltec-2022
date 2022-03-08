@@ -55,19 +55,19 @@ public final class Constants {
         public static final double counterSpinkIz = 0;
         public static final double counterSpinkFF = 1.5e-4;
 
-        public static int shooterFender = 1900;
+        public static int shooterFender = 3500;
         public static int backSpinFender = 1700;
-        public static final int shooter1MeterFender = 2200;
-        public static final int shooter1backSpinFender = 1800;
+        public static final int shooter1MeterFender = 4200;
+        public static final int shooter1backSpinFender = 3500;
         public static int velocityTolerance = 25;
     }
 
     public static final class DeliveryConstants {
         public static final int deliveryID = 3;
         // Delivery PID
-        public static final double deliverykP = 1;
+        public static final double deliverykP = 0.7;
         public static final double deliverykI = 0;
-        public static final double deliverykD = 1;
+        public static final double deliverykD = 0.5;
         public static final double deliverykIz = 0;
         public static final double deliverykFF = 0.0000;
 
@@ -85,5 +85,10 @@ public final class Constants {
         public static final double intakeSpeed = 0.8;
         public static final int intakeIn = 2;
         public static final int intakeOut = 3;
+    }
+
+    public static final class LedConstants
+    {
+        public static final int PWMPort = 1; //Not Final, CHANGE
     }
 }
