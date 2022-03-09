@@ -57,7 +57,9 @@ public class DeliverySubsystem extends SubsystemBase {
     setPoint=0;
     resetEncoder();
   }
-
+  public double getSpeed(){
+    return delivery.get();
+  }
   public void resetEncoder(){
     deliveryEncoder.setPosition(0);
   }

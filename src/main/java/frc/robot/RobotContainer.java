@@ -12,6 +12,7 @@ import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DeliveryEnable;
+import frc.robot.commands.DeliveryEnableConditional;
 import frc.robot.commands.DeliveryRotate;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
@@ -83,13 +84,13 @@ public class RobotContainer {
     // final JoystickButton dpadUp = new JoystickButton(joystick1, 5);
     // final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
     // Shooting from Fender
-
+    
     new JoystickButton(joystick2, Button.kA.value)
         .whileHeld(
             new SequentialCommandGroup(
                 new ShooterSpeed(ShooterConstants.shooterFender,
                     shooter),
-                new DeliveryEnable(0.7, delivery)))
+                new DeliveryEnableConditional(0.7, delivery, shooter)))
         .whenReleased(new ShooterSpeed(0, shooter));
 
     new JoystickButton(joystick2, Button.kB.value)
@@ -97,7 +98,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new ShooterSpeed(ShooterConstants.shooter1MeterFender, 
                     shooter),
-                new DeliveryEnable(0.7, delivery)))
+                new DeliveryEnableConditional(0.7, delivery, shooter)))
         .whenReleased(new ShooterSpeed(0, shooter));
 
         new JoystickButton(joystick2, Button.kY.value)

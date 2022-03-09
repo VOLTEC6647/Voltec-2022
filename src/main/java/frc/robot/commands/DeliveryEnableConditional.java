@@ -6,28 +6,35 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DeliverySubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class DeliveryEnable extends CommandBase {
+public class DeliveryEnableConditional extends CommandBase {
   private DeliverySubsystem delivery;
   private double speed;
+  private ShooterSubsystem shooter;
   /** Creates a new DeliveryEnable. */
-  public DeliveryEnable(double speed, DeliverySubsystem delivery) {
+  public DeliveryEnableConditional(double speed, DeliverySubsystem delivery,ShooterSubsystem shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.delivery = delivery;
     this.speed = speed;
+    this.shooter = shooter;
     addRequirements(delivery);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    delivery.setSpeed(speed);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    if(shooter.isInTolerance()&&delivery.getSpeed()!=speed){
+      delivery.setSpeed(speed);
+    }else{
+      delivery.setSpeed(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
