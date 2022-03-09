@@ -63,7 +63,7 @@ public class ChassisSubsystem extends SubsystemBase {
   }
 
   public void ArcadeDrive(double linearSpeed, double rotSpeed){
-    chasis.arcadeDrive(linearSpeed*0.5, rotSpeed*0.5);
+    chasis.arcadeDrive(linearSpeed, rotSpeed);
   }
   public void toggleReduccion(){
     if (forwardSolenoid.get()) {
