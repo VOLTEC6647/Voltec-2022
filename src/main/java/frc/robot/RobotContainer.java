@@ -90,7 +90,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new ShooterSpeed(ShooterConstants.shooterFender,
                     shooter),
-                new DeliveryEnableConditional(0.7, delivery, shooter)))
+                new DeliveryEnable(0.7, delivery)))
         .whenReleased(new ShooterSpeed(0, shooter));
 
     new JoystickButton(joystick2, Button.kB.value)
@@ -98,7 +98,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new ShooterSpeed(ShooterConstants.shooter1MeterFender, 
                     shooter),
-                new DeliveryEnableConditional(0.7, delivery, shooter)))
+                new DeliveryEnable(0.7, delivery)))
         .whenReleased(new ShooterSpeed(0, shooter));
 
         new JoystickButton(joystick2, Button.kY.value)
@@ -142,7 +142,32 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DeliveryRotate(0, delivery);
+    return new SequentialCommandGroup(
+        //Disparar primera pelota
+        new SequentialCommandGroup(
+            new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
+            new DeliveryEnable(0.7, delivery)
+        ).withTimeout(4),
+        new ShooterSpeed(0, shooter),
+
+        //Ir por segunda pelota
+        new RunCommand(()->intake.toggleIntake(), intake),
+        new ParallelCommandGroup( 
+            new RunCommand(()->chassis.TankDrive(.3, .3), chassis),
+            new StartEndCommand(
+                () -> intake.setIntakeMotorSpeed(.5),
+                () -> intake.setIntakeMotorSpeed(0)
+            )
+        ).withTimeout(4),
+        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
+        new RunCommand(()->chassis.TankDrive(-.3, -.3), chassis).withTimeout(4),
+        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
+        new SequentialCommandGroup(
+            new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
+            new DeliveryEnable(0.7, delivery)
+        ).withTimeout(4),
+        new ShooterSpeed(0, shooter) 
+    );
   }
 
   public double getTrigger() {
