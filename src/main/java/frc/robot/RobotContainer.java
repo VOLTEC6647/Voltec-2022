@@ -115,7 +115,7 @@ public class RobotContainer {
         new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
     new JoystickButton(joystick1, Button.kY.value)
-        .whenPressed(new InstantCommand(() -> chassis.toggleReduccion()));
+        .whileHeld(new InstantCommand(() -> chassis.toggleReduccion()));
 
     new JoystickButton(joystick2, Button.kX.value)
         .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
