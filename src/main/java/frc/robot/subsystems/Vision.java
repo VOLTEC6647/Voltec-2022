@@ -12,7 +12,6 @@ public class Vision extends SubsystemBase {
   public final NetworkTable m_limelightTable;
   private double tx, ty, ta;
 
-  private final ChassisSubsystem chasis = new ChassisSubsystem();
 
   public Vision() {
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
@@ -30,19 +29,7 @@ public class Vision extends SubsystemBase {
   }
 
   public void moveTowardsgoal(double kp, double min_command, double steeringAdjust) {
-    double tx = getTX();
 
-    double headingError = -tx;
-
-    if (tx > 1) {
-      steeringAdjust = kp * headingError - min_command;
-    }
-
-    if (tx < 1) {
-      steeringAdjust = kp * headingError + min_command;
-    }
-
-    chasis.TankDrive(steeringAdjust, -steeringAdjust);
   }
 
   public double getTX() {

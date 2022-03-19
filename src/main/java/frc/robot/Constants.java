@@ -94,8 +94,8 @@ public final class Constants {
     
     public static final class VisionConstants
     {
-        public static final double kp = -0.1f;
-        public static final double min_command = 0.05;
+        public static final double kp = -0.04f;
+        public static final double min_command = 0.08;
         public static final double steeringAdjust = 0.0;
     }
 }
