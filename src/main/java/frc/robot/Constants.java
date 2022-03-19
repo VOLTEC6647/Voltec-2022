@@ -91,4 +91,11 @@ public final class Constants {
     {
         public static final int PWMPort = 1; //Not Final, CHANGE
     }
+    
+    public static final class VisionConstants
+    {
+        public static final double kp = -0.1f;
+        public static final double min_command = 0.05;
+        public static final double steeringAdjust = 0.0;
+    }
 }
