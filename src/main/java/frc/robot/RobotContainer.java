@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Constants.ChasisConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
@@ -144,11 +145,11 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return new SequentialCommandGroup(
         //Disparar primera pelota
-        new SequentialCommandGroup(
-            new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
-            new DeliveryEnable(0.7, delivery)
-        ).withTimeout(4),
-        new ShooterSpeed(0, shooter),
+        // new SequentialCommandGroup(
+        //     new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
+        //     new DeliveryEnable(0.7, delivery)
+        // ).withTimeout(4),
+        // new ShooterSpeed(0, shooter),
 
         //Ir por segunda pelota
         new RunCommand(()->intake.toggleIntake(), intake),
@@ -158,10 +159,26 @@ public class RobotContainer {
                 () -> intake.setIntakeMotorSpeed(.5),
                 () -> intake.setIntakeMotorSpeed(0)
             )
-        ).withTimeout(4),
+        ).withTimeout(1.5),
+
+        //Disparar las dos pelota
+        new SequentialCommandGroup(
+            new ShooterSpeed(ShooterConstants.shooterAutonomousFender, shooter),
+            new DeliveryEnable(0.7, delivery)
+        ).withTimeout(3),
+
+        //Ir por tercera pelota
+        new ShooterSpeed(0, shooter),
+        new RunCommand(()->chassis.TankDrive(.3,-.3), chassis).withTimeout(.5),
         new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
-        new RunCommand(()->chassis.TankDrive(-.3, -.3), chassis).withTimeout(4),
-        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
+        new ParallelCommandGroup( 
+            new RunCommand(()->chassis.TankDrive(.3, .3), chassis),
+            new StartEndCommand(
+                () -> intake.setIntakeMotorSpeed(.5),
+                () -> intake.setIntakeMotorSpeed(0)
+            )
+        ).withTimeout(3),
+
         new SequentialCommandGroup(
             new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
             new DeliveryEnable(0.7, delivery)
