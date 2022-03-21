@@ -104,7 +104,7 @@ public class RobotContainer {
         new JoystickButton(joystick2, Button.kY.value)
         .whileHeld(
             new ParallelCommandGroup(
-                new ShooterSpeed(800, 
+                new ShooterSpeed(1800, 
                     shooter),
                 new DeliveryEnable(0.3, delivery)))
         .whenReleased(new ShooterSpeed(0, shooter));
@@ -115,7 +115,7 @@ public class RobotContainer {
         new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
     new JoystickButton(joystick1, Button.kY.value)
-        .whileHeld(new InstantCommand(() -> chassis.toggleReduccion()));
+        .whenPressed(new InstantCommand(() -> chassis.toggleReduccion()));
 
     new JoystickButton(joystick2, Button.kX.value)
         .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
