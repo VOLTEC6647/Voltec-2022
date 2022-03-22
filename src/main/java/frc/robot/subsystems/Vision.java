@@ -12,6 +12,7 @@ public class Vision extends SubsystemBase {
   public final NetworkTable m_limelightTable;
   private double tx, ty, ta;
 
+  private ChassisSubsystem chasis;
 
   public Vision() {
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
@@ -20,16 +21,22 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    /*
-     * SmartDashboard.putNumber("LimelightX", getTX());
-     * SmartDashboard.putNumber("LimelightY", getTX());
-     * SmartDashboard.putNumber("LimelightArea", getTA());
-     * SmartDashboard.putNumber("Distance", getDistance());
-     */
   }
 
-  public void moveTowardsgoal(double kp, double min_command, double steeringAdjust) {
+  //MUST CHECK
+  public void aimingNrange(double kpAim, double kpDistance, double min_aim_command, double steeringAdjust) {
+    double headingError = -getTX();
+    double distanceError = -getTY();
 
+    if (tx > 1) {
+      steeringAdjust = kpAim * headingError - min_aim_command;
+    } else if (tx < -1) {
+      steeringAdjust = kpAim * headingError + min_aim_command;
+    }
+
+    double distance_Adjust = kpDistance * distanceError;
+
+    chasis.TankDrive(-(steeringAdjust + distance_Adjust), steeringAdjust + distance_Adjust);
   }
 
   public double getTX() {
