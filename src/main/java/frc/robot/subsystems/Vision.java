@@ -12,8 +12,6 @@ public class Vision extends SubsystemBase {
   public final NetworkTable m_limelightTable;
   private double tx, ty, ta;
 
-  private ChassisSubsystem chasis;
-
   public Vision() {
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -24,7 +22,7 @@ public class Vision extends SubsystemBase {
   }
 
   //MUST CHECK
-  public void aimingNrange(double kpAim, double kpDistance, double min_aim_command, double steeringAdjust) {
+  public void aimingNrange(ChassisSubsystem chasis, double kpAim, double kpDistance, double min_aim_command, double steeringAdjust) {
     double headingError = -getTX();
     double distanceError = -getTY();
 

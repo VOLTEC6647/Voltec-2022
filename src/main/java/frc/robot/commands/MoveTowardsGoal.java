@@ -12,18 +12,20 @@ public class MoveTowardsGoal extends CommandBase {
   private final Vision vision;
   private final ChassisSubsystem chasis;
 
-  double kp;
-  double min_command;
+  double kpAim;
+  double min_aim_command;
   double steeringAdjust;
+  double kpDistance;
 
   /** Creates a new MoveTowardGoal. */
-  public MoveTowardsGoal(Vision vision, ChassisSubsystem chasis, double kp, double min_command, double steeringAdjust) {
+  public MoveTowardsGoal(Vision vision, ChassisSubsystem chasis, double kp, double min_command, double steeringAdjust, double kpDistance) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.vision = vision;
     this.chasis = chasis;
-    this.kp = kp;
-    this.min_command = min_command;
+    this.kpAim = kp;
+    this.min_aim_command = min_command;
     this.steeringAdjust = steeringAdjust;
+    this.kpDistance = kpDistance;
     addRequirements(vision, chasis);
   }
 
@@ -35,19 +37,21 @@ public class MoveTowardsGoal extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double tx = vision.getTX();
+    vision.aimingNrange(chasis, kpAim, kpDistance, min_aim_command, steeringAdjust);
 
-    double headingError = -tx;
+    // double tx = vision.getTX();
 
-    if (tx > 1) {
-      steeringAdjust = kp * headingError - min_command;
-    }
+    // double headingError = -tx;
 
-    if (tx < 1) {
-      steeringAdjust = kp * headingError + min_command;
-    }
+    // if (tx > 1) {
+    //   steeringAdjust = kpAim * headingError - min_aim_command;
+    // }
 
-    chasis.TankDrive(-steeringAdjust, steeringAdjust);
+    // if (tx < 1) {
+    //   steeringAdjust = kpAim * headingError + min_aim_command;
+    // }
+
+    // chasis.TankDrive(-steeringAdjust, steeringAdjust);
   }
 
   // Called once the command ends or is interrupted.
