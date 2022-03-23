@@ -145,28 +145,30 @@ public class RobotContainer {
     return new SequentialCommandGroup(
         //Disparar primera pelota
         new SequentialCommandGroup(
-            new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
+            new ShooterSpeed(3600, shooter),
             new DeliveryEnable(0.7, delivery)
-        ).withTimeout(4),
+        ).withTimeout(3),
         new ShooterSpeed(0, shooter),
 
         //Ir por segunda pelota
-        new RunCommand(()->intake.toggleIntake(), intake),
+
         new ParallelCommandGroup( 
-            new RunCommand(()->chassis.TankDrive(.3, .3), chassis),
+            new RunCommand(()->chassis.TankDrive(-.4, -.4), chassis),
             new StartEndCommand(
                 () -> intake.setIntakeMotorSpeed(.5),
                 () -> intake.setIntakeMotorSpeed(0)
             )
-        ).withTimeout(4),
+        ).withTimeout(2),
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(.1),
         new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
-        new RunCommand(()->chassis.TankDrive(-.3, -.3), chassis).withTimeout(4),
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.1),
+        new RunCommand(()->chassis.TankDrive(.4, .4), chassis).withTimeout(2),
         new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
         new SequentialCommandGroup(
-            new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
+            new ShooterSpeed(3600, shooter),
             new DeliveryEnable(0.7, delivery)
         ).withTimeout(4),
-        new ShooterSpeed(0, shooter) 
+        new ShooterSpeed(0, shooter)
     );
   }
 
