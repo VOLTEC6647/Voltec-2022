@@ -57,7 +57,7 @@ public final class Constants {
 
         public static int shooterFender = 3500;
         public static int backSpinFender = 1700;
-        public static final int shooter1MeterFender = 4200;
+        public static final int shooter1MeterFender = 4000;
         public static final int shooter1backSpinFender = 3500;
         public static int velocityTolerance = 25;
     }
