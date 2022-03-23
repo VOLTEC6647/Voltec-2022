@@ -151,6 +151,9 @@ public class RobotContainer {
         // ).withTimeout(4),
         // new ShooterSpeed(0, shooter),
 
+
+        //3 Balls autonomous
+
         //Ir por segunda pelota
         new RunCommand(()->intake.toggleIntake(), intake),
         new ParallelCommandGroup( 
@@ -169,7 +172,7 @@ public class RobotContainer {
 
         //Ir por tercera pelota
         new ShooterSpeed(0, shooter),
-        new RunCommand(()->chassis.TankDrive(.3,-.3), chassis).withTimeout(.5),
+        new RunCommand(()->chassis.TankDrive(.3,-.3), chassis).withTimeout(1.5),
         new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
         new ParallelCommandGroup( 
             new RunCommand(()->chassis.TankDrive(.3, .3), chassis),
@@ -179,10 +182,13 @@ public class RobotContainer {
             )
         ).withTimeout(3),
 
+        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
+        new RunCommand(()->chassis.TankDrive(-.3, .3), chassis).withTimeout(.7),
+        new RunCommand(()->chassis.TankDrive(0,0), chassis).withTimeout(.2),
         new SequentialCommandGroup(
-            new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
+            new ShooterSpeed(ShooterConstants.shooterAutonomousFender, shooter),
             new DeliveryEnable(0.7, delivery)
-        ).withTimeout(4),
+        ).withTimeout(2),
         new ShooterSpeed(0, shooter) 
     );
   }
