@@ -95,7 +95,7 @@ public final class Constants {
     public static final class VisionConstants
     {
         public static final double kpAim = -0.04;
-        public static final double kpDistance = -0.1; //CHECK 
+        public static final double kpDistance = -0.4; //CHECK 
         public static final double min_aim_command = 0.08;
         public static final double steeringAdjust = 0.0;
     }
