@@ -34,7 +34,7 @@ public class Vision extends SubsystemBase {
 
     double distance_Adjust = kpDistance * distanceError;
 
-    chasis.TankDrive(-(steeringAdjust + distance_Adjust), steeringAdjust + distance_Adjust);
+    chasis.TankDrive(steeringAdjust + distance_Adjust, -(steeringAdjust + distance_Adjust));
   }
 
   public double getTX() {
