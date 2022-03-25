@@ -24,7 +24,7 @@ public class Vision extends SubsystemBase {
   //MUST CHECK
   public void aimingNrange(ChassisSubsystem chasis, double kpAim, double kpDistance, double min_aim_command, double steeringAdjust) {
     double headingError = -getTX();
-    double distanceError = -getTY();
+    double distanceError = getTY();
 
     if (tx > 1) {
       steeringAdjust = kpAim * headingError - min_aim_command;
@@ -34,7 +34,8 @@ public class Vision extends SubsystemBase {
 
     double distance_Adjust = kpDistance * distanceError;
 
-    chasis.TankDrive(-(steeringAdjust + distance_Adjust), steeringAdjust + distance_Adjust);
+    //chasis.TankDrive((distance_Adjust),distance_Adjust);
+    chasis.TankDrive((-steeringAdjust + distance_Adjust), steeringAdjust + distance_Adjust);
   }
 
   public double getTX() {
