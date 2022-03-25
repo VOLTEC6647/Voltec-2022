@@ -23,11 +23,13 @@ import frc.robot.subsystems.IntakeSubsytem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.XboxControllerUpgrade;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -144,14 +146,16 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return new SequentialCommandGroup(
         //Disparar primera pelota
-        new SequentialCommandGroup(
-            new ShooterSpeed(3600, shooter),
-            new DeliveryEnable(0.7, delivery)
-        ).withTimeout(3),
-        new ShooterSpeed(0, shooter),
+        // new SequentialCommandGroup(
+        //     new ShooterSpeed(3600, shooter),
+        //     new DeliveryEnable(0.7, delivery)
+        // ).withTimeout(3),
+        // new ShooterSpeed(0, shooter),
 
         //Ir por segunda pelota
-
+        // new RunCommand(()->intake.toggleIntake()).withInterrupt(intake.intakeOut::get),
+        
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
         new ParallelCommandGroup( 
             new RunCommand(()->chassis.TankDrive(-.4, -.4), chassis),
             new StartEndCommand(
@@ -159,16 +163,16 @@ public class RobotContainer {
                 () -> intake.setIntakeMotorSpeed(0)
             )
         ).withTimeout(2),
-        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(.1),
         new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
-        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.1),
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
+        // new RunCommand(()->intake.toggleIntake()).withInterrupt(intake.intakeOut::get),
         new RunCommand(()->chassis.TankDrive(.4, .4), chassis).withTimeout(2),
-        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
-        new SequentialCommandGroup(
-            new ShooterSpeed(3600, shooter),
-            new DeliveryEnable(0.7, delivery)
-        ).withTimeout(4),
-        new ShooterSpeed(0, shooter)
+        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2)
+        // new SequentialCommandGroup(
+        //     new ShooterSpeed(3600, shooter),
+        //     new DeliveryEnable(0.7, delivery)
+        // ).withTimeout(4),
+        // new ShooterSpeed(0, shooter)
     );
   }
 
