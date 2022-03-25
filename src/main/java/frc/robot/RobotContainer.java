@@ -16,14 +16,12 @@ import frc.robot.commands.DeliveryEnable;
 import frc.robot.commands.DeliveryEnableConditional;
 import frc.robot.commands.DeliveryRotate;
 import frc.robot.commands.MoveClimber;
-import frc.robot.commands.MoveTowardsGoal;
 import frc.robot.commands.ShooterSpeed;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.ClimberSubSystem;
 import frc.robot.subsystems.DeliverySubsystem;
 import frc.robot.subsystems.IntakeSubsytem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.Vision;
 import frc.robot.utils.XboxControllerUpgrade;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -54,7 +52,6 @@ public class RobotContainer {
     private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort1, 0.2);
 
     private final ChassisSubsystem chassis = new ChassisSubsystem();
-    private final Vision vision = new Vision();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -138,7 +135,7 @@ public class RobotContainer {
         new JoystickButton(joystick2, Button.kRightBumper.value)
                 .whileHeld(new DeliveryEnable(-0.3, delivery));
         new JoystickButton(joystick1, Button.kB.value)
-            .whileHeld(new MoveTowardsGoal(vision, chassis, VisionConstants.kpAim, VisionConstants.min_aim_command, VisionConstants.steeringAdjust, VisionConstants.kpDistance));
+            .whileHeld(new StartEndCommand(() -> chassis.toggleAim(), () -> chassis.toggleAim(), chassis));
     }
 
     /**

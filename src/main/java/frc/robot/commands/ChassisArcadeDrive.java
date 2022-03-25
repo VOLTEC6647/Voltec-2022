@@ -27,7 +27,10 @@ public class ChassisArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    chassis.ArcadeDrive(left, right);
+	if(chassis.isAiming())
+	  return;
+    
+	chassis.ArcadeDrive(left, right);
   }
 
   // Called once the command ends or is interrupted.
