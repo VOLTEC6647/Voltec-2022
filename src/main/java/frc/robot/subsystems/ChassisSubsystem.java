@@ -27,7 +27,6 @@ public class ChassisSubsystem extends SubsystemBase {
   private Solenoid forwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid);
   private Solenoid backwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.LowGearSolenoid);
   
-
   /** Creates a new Chasis. */
   public ChassisSubsystem() {
     rearLeft.follow(frontLeft);
