@@ -38,20 +38,6 @@ public class MoveTowardsGoal extends CommandBase {
   @Override
   public void execute() {
     vision.aimingNrange(chasis, kpAim, kpDistance, min_aim_command, steeringAdjust);
-
-    // double tx = vision.getTX();
-
-    // double headingError = -tx;
-
-    // if (tx > 1) {
-    //   steeringAdjust = kpAim * headingError - min_aim_command;
-    // }
-
-    // if (tx < 1) { 
-    //   steeringAdjust = kpAim * headingError + min_aim_command;
-    // }
-
-    // chasis.TankDrive(-steeringAdjust, steeringAdjust);
   }
 
   // Called once the command ends or is interrupted.
