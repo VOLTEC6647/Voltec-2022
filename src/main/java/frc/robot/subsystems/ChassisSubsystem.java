@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -36,6 +37,12 @@ public class ChassisSubsystem extends SubsystemBase {
     rearLeft.setInverted(InvertType.FollowMaster);
     rearRight.setInverted(InvertType.FollowMaster);
     chasis = new DifferentialDrive(frontLeft, frontRight);
+
+    //Set CoastMode
+    rearLeft.setNeutralMode(NeutralMode.Coast);
+    rearRight.setNeutralMode(NeutralMode.Coast);
+    frontLeft.setNeutralMode(NeutralMode.Coast);
+    frontRight.setNeutralMode(NeutralMode.Coast);
 
   }
   //obtener error de los encoders a traves de la velocidad
