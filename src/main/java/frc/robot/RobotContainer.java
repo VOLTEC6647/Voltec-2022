@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.DeliveryEnable;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
@@ -37,103 +38,105 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final DeliverySubsystem delivery = new DeliverySubsystem();
-  private final ShooterSubsystem shooter = new ShooterSubsystem();
-  private final IntakeSubsytem intake = new IntakeSubsytem();
-  private final ClimberSubSystem climber = new ClimberSubSystem();
+    // The robot's subsystems and commands are defined here...
+    private final DeliverySubsystem delivery = new DeliverySubsystem();
+    private final ShooterSubsystem shooter = new ShooterSubsystem();
+    private final IntakeSubsytem intake = new IntakeSubsytem();
+    private final ClimberSubSystem climber = new ClimberSubSystem();
 
-  
+    private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort, 0.2);
+    private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort1, 0.2);
 
-  private final XboxControllerUpgrade joystick1 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort, 0.2);
-  private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort1, 0.2);
+    private final ChassisSubsystem chassis = new ChassisSubsystem();
 
-  private final ChassisSubsystem chassis = new ChassisSubsystem();
-  
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Configure the button bindings
+        chassis.setDefaultCommand(
+                new RunCommand(() -> chassis.TankDrive(joystick1.getLeftY(), joystick1.getRightY()), chassis));
+        configureButtonBindings();
+        /*
+         * chassis.setDefaultCommand(
+         * new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(),
+         * -joystick1.getRightX()), chassis));
+         * configureButtonBindings();
+         */
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure the button bindings
-     chassis.setDefaultCommand(
-         new RunCommand(() -> chassis.TankDrive(joystick1.getLeftY(), joystick1.getRightY()), chassis));
-    configureButtonBindings();
-    /*chassis.setDefaultCommand(
-        new RunCommand(() -> chassis.ArcadeDrive(joystick1.getLeftY(), -joystick1.getRightX()), chassis));
-    configureButtonBindings();*/
+    }
 
-  }
+    /**
+     * Use this method to define your button->command mappings. Buttons can be
+     * created by
+     * instantiating a {@link GenericHID} or one of its subclasses ({@link
+     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+     * it to a {@link
+     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureButtonBindings() {
+        // final JoystickButton dpadUp = new JoystickButton(joystick1, 5);
+        // final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
+        // Shooting from Fender
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-   * it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    // final JoystickButton dpadUp = new JoystickButton(joystick1, 5);
-    // final JoystickButton dpadDown = new JoystickButton(joystick1, 7);
-    // Shooting from Fender
-    
-    new JoystickButton(joystick2, Button.kA.value)
-        .whileHeld(
-            new SequentialCommandGroup(
-                new ShooterSpeed(ShooterConstants.shooterFender,
-                    shooter),
-                new DeliveryEnable(0.7, delivery)))
-        .whenReleased(new ShooterSpeed(0, shooter));
+        new JoystickButton(joystick2, Button.kA.value)
+                .whileHeld(
+                        new SequentialCommandGroup(
+                                new ShooterSpeed(ShooterConstants.shooterFender,
+                                        shooter),
+                                new DeliveryEnable(0.7, delivery)))
+                .whenReleased(new ShooterSpeed(0, shooter));
 
-    new JoystickButton(joystick2, Button.kB.value)
-        .whileHeld(
-            new SequentialCommandGroup(
-                new ShooterSpeed(ShooterConstants.shooter1MeterFender, 
-                    shooter),
-                new DeliveryEnable(0.7, delivery)))
-        .whenReleased(new ShooterSpeed(0, shooter));
+        new JoystickButton(joystick2, Button.kB.value)
+                .whileHeld(
+                        new SequentialCommandGroup(
+                                new ShooterSpeed(ShooterConstants.shooter1MeterFender,
+                                        shooter),
+                                new DeliveryEnable(0.7, delivery)))
+                .whenReleased(new ShooterSpeed(0, shooter));
 
         new JoystickButton(joystick2, Button.kY.value)
-        .whileHeld(
-            new ParallelCommandGroup(
-                new ShooterSpeed(1800, 
-                    shooter),
-                new DeliveryEnable(0.3, delivery)))
-        .whenReleased(new ShooterSpeed(0, shooter));
-    joystick2.Dpad.Down.whileHeld(
-        new MoveClimber(ClimberConstants.reverseSpeed, climber));
+                .whileHeld(
+                new ParallelCommandGroup(
+                        new ShooterSpeed(1800, 
+                        shooter),
+                        new DeliveryEnable(0.3, delivery)))
+                .whenReleased(new ShooterSpeed(0, shooter));
+        joystick2.Dpad.Down.whileHeld(
+                new MoveClimber(ClimberConstants.reverseSpeed, climber));
 
-    joystick2.Dpad.Up.whileHeld(
-        new MoveClimber(ClimberConstants.forwardSpeed, climber));
+        joystick2.Dpad.Up.whileHeld(
+                new MoveClimber(ClimberConstants.forwardSpeed, climber));
 
-    new JoystickButton(joystick1, Button.kY.value)
-        .whenPressed(new InstantCommand(() -> chassis.toggleReduccion()));
+        new JoystickButton(joystick1, Button.kY.value)
+                .whenPressed(new InstantCommand(() -> chassis.toggleReduccion()));
 
-    new JoystickButton(joystick2, Button.kX.value)
-        .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
-    
-    new JoystickButton(joystick1, Button.kRightBumper.value)
-        .whileHeld(new InstantCommand(() -> chassis.toggleBrake(false)))
-        .whenReleased(new InstantCommand(() -> chassis.toggleBrake(true)));
+        new JoystickButton(joystick2, Button.kX.value)
+                .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
+        
+        new JoystickButton(joystick1, Button.kRightBumper.value)
+                .whileHeld(new InstantCommand(() -> chassis.toggleBrake(false)))
+                .whenReleased(new InstantCommand(() -> chassis.toggleBrake(true)));
 
-    joystick2.rightTriggerButton.whileHeld(
-        new StartEndCommand(
-            () -> intake.setIntakeMotorSpeed(.5),
-            () -> intake.setIntakeMotorSpeed(0),
-            intake));
+        joystick2.rightTriggerButton.whileHeld(
+                new StartEndCommand(
+                () -> intake.setIntakeMotorSpeed(.5),
+                () -> intake.setIntakeMotorSpeed(0),
+                intake));
 
-    joystick2.leftTriggerButton.whileHeld(
-        new StartEndCommand(
-            () -> intake.setIntakeMotorSpeed(-.5),
-            () -> intake.setIntakeMotorSpeed(0),
-            intake));
-    new JoystickButton(joystick2, Button.kRightBumper.value)
-        .whileHeld(new DeliveryEnable(-0.3, delivery));
-  }
+        joystick2.leftTriggerButton.whileHeld(
+                new StartEndCommand(
+                () -> intake.setIntakeMotorSpeed(-.5),
+                () -> intake.setIntakeMotorSpeed(0),
+                intake));
+        new JoystickButton(joystick2, Button.kRightBumper.value)
+                .whileHeld(new DeliveryEnable(-0.3, delivery));
+        new JoystickButton(joystick1, Button.kLeftBumper.value)
+                .whileHeld(new StartEndCommand(() -> chassis.toggleAim(), () -> chassis.toggleAim(), chassis));
+        }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

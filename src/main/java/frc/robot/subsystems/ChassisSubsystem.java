@@ -8,12 +8,16 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChasisConstants;
+import frc.robot.Constants.VisionConstants;
+import frc.robot.utils.vision.LimelightCamera;
+import frc.robot.utils.vision.LimelightData.Data;
 
 public class ChassisSubsystem extends SubsystemBase {
   private WPI_TalonFX frontLeft = new WPI_TalonFX(ChasisConstants.frontLeftID);
@@ -28,6 +32,13 @@ public class ChassisSubsystem extends SubsystemBase {
   private Solenoid forwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid);
   private Solenoid backwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.LowGearSolenoid);
 
+  // Visión:
+  private final LimelightCamera limelight;
+
+  private final Object lock = new Object(); // Solamente para "pedir permiso" para correr el bloque de código
+  private final Notifier notifier;
+  private boolean aiming = false, firstRun = true;
+
   /** Creates a new Chasis. */
   public ChassisSubsystem() {
     rearLeft.follow(frontLeft);
@@ -38,6 +49,42 @@ public class ChassisSubsystem extends SubsystemBase {
     rearRight.setInverted(InvertType.FollowMaster);
     chasis = new DifferentialDrive(frontLeft, frontRight);
 
+    // Inicialización de la Limelight
+    limelight = new LimelightCamera("limelight");
+
+    // Subrutina para visión
+    notifier = new Notifier(() -> {
+      // Hace que esté limitado a un solo thread
+      synchronized (lock) {
+        if (firstRun) {
+          Thread.currentThread().setName("limelight");
+          Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+          firstRun = false;
+        }
+
+        if (!aiming)
+          return;
+
+        synchronized (ChassisSubsystem.this) {
+          if (!limelight.isTargetFound())
+            return;
+
+          double tx = limelight.getData(Data.HORIZONTAL_OFFSET),
+              ty = limelight.getData(Data.VERTICAL_OFFSET);
+
+          double kpAim = VisionConstants.kpAim, kpDistance = VisionConstants.kpDistance,
+              min_aim_command = VisionConstants.min_aim_command;
+          
+          var steeringAdjust = tx > 1 ? (kpAim * -tx - min_aim_command)
+              : (tx < -1 ? (kpAim * -tx + min_aim_command) : 0.0);
+          var distanceAdjust = kpDistance * ty;
+          
+          TankDrive(-steeringAdjust + distanceAdjust, steeringAdjust + distanceAdjust);
+        }
+      }
+    });
+
+    notifier.startPeriodic(0.01); // Iniciar subrutina a 10 ms por ciclo.
     // Set CoastMode
     rearLeft.setNeutralMode(NeutralMode.Coast);
     rearRight.setNeutralMode(NeutralMode.Coast);
@@ -68,7 +115,6 @@ public class ChassisSubsystem extends SubsystemBase {
     this.leftSpeed = leftSpeed;
     this.rightSpeed = rightSpeed;
     chasis.tankDrive(leftSpeed, rightSpeed);
-
   }
 
   public void ArcadeDrive(double linearSpeed, double rotSpeed) {
@@ -76,14 +122,16 @@ public class ChassisSubsystem extends SubsystemBase {
   }
 
   public void toggleReduccion() {
-    if (forwardSolenoid.get()) {
-      forwardSolenoid.set(false);
-      backwardSolenoid.set(true);
+    forwardSolenoid.set(!forwardSolenoid.get());
+    backwardSolenoid.set(forwardSolenoid.get());
+  }
 
-    } else {
-      forwardSolenoid.set(true);
-      backwardSolenoid.set(false);
-    }
+  public void toggleAim() {
+    aiming = !aiming;
+  }
+
+  public boolean isAiming() {
+    return aiming;
   }
 
   public void toggleBrake(boolean brake)
