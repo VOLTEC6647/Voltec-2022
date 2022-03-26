@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -24,16 +23,18 @@ public class ChassisSubsystem extends SubsystemBase {
   private WPI_TalonFX frontRight = new WPI_TalonFX(ChasisConstants.frontRightID);
   private WPI_TalonFX rearLeft = new WPI_TalonFX(ChasisConstants.rearLeftID);
   private WPI_TalonFX rearRight = new WPI_TalonFX(ChasisConstants.rearRightID);
-  // private DoubleSolenoid reduction  = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid, ChasisConstants.LowGearSolenoid);
-  private DifferentialDrive chasis; 
+  // private DoubleSolenoid reduction = new
+  // DoubleSolenoid(PneumaticsModuleType.CTREPCM,
+  // ChasisConstants.HighGearSolenoid, ChasisConstants.LowGearSolenoid);
+  private DifferentialDrive chasis;
   private double leftSpeed, rightSpeed;
   private Solenoid forwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid);
   private Solenoid backwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.LowGearSolenoid);
-  
+
   // Visión:
   private final LimelightCamera limelight;
 
-  private final Object lock = new Object();
+  private final Object lock = new Object(); // Solamente para "pedir permiso" para correr el bloque de código
   private final Notifier notifier;
   private boolean aiming = false, firstRun = true;
   // ...
@@ -46,47 +47,48 @@ public class ChassisSubsystem extends SubsystemBase {
     frontRight.setInverted(false);
     rearLeft.setInverted(InvertType.FollowMaster);
     rearRight.setInverted(InvertType.FollowMaster);
-	chasis = new DifferentialDrive(frontLeft, frontRight);
-	
-	// Inicialización de la Limelight
-	limelight = new LimelightCamera("limelight");
+    chasis = new DifferentialDrive(frontLeft, frontRight);
 
-	// Subrutina para visión
-	notifier = new Notifier(() -> {
-		synchronized(lock) {
-			if (firstRun) {
-				Thread.currentThread().setName("limelight");
-				Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-				firstRun = false;
-			}
+    // Inicialización de la Limelight
+    limelight = new LimelightCamera("limelight");
 
-			if (!aiming)
-				return;
+    // Subrutina para visión
+    notifier = new Notifier(() -> {
+      // Hace que esté limitado a un solo thread
+      synchronized (lock) {
+        if (firstRun) {
+          Thread.currentThread().setName("limelight");
+          Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+          firstRun = false;
+        }
 
-			synchronized(ChassisSubsystem.this) {
-				if(!limelight.isTargetFound())
-					return;
+        if (!aiming)
+          return;
 
-				double tx = limelight.getData(Data.HORIZONTAL_OFFSET),
-					ty = limelight.getData(Data.VERTICAL_OFFSET);
+        synchronized (ChassisSubsystem.this) {
+          if (!limelight.isTargetFound())
+            return;
 
-				double kpAim = VisionConstants.kpAim, kpDistance = VisionConstants.kpDistance,
-					min_aim_command = VisionConstants.min_aim_command;
+          double tx = limelight.getData(Data.HORIZONTAL_OFFSET),
+              ty = limelight.getData(Data.VERTICAL_OFFSET);
 
-				var steeringAdjust = tx > 1 ? (kpAim * -tx - min_aim_command) :
-					(tx < -1 ? (kpAim * -tx + min_aim_command) : 0.0);
-				var distanceAdjust = kpDistance * ty;
-				
-				TankDrive(-steeringAdjust + distanceAdjust, steeringAdjust + distanceAdjust);
-			}
-		}
-	});
+          double kpAim = VisionConstants.kpAim, kpDistance = VisionConstants.kpDistance,
+              min_aim_command = VisionConstants.min_aim_command;
+          
+          var steeringAdjust = tx > 1 ? (kpAim * -tx - min_aim_command)
+              : (tx < -1 ? (kpAim * -tx + min_aim_command) : 0.0);
+          var distanceAdjust = kpDistance * ty;
+          
+          TankDrive(-steeringAdjust + distanceAdjust, steeringAdjust + distanceAdjust);
+        }
+      }
+    });
 
-	notifier.startPeriodic(0.01); // Iniciar subrutina a 10 ms por ciclo.
+    notifier.startPeriodic(0.01); // Iniciar subrutina a 10 ms por ciclo.
   }
 
-  //obtener error de los encoders a traves de la velocidad
-  public void publishData(){
+  // obtener error de los encoders a traves de la velocidad
+  public void publishData() {
     SmartDashboard.putNumber("LeftSpeed", frontLeft.get());
     SmartDashboard.putNumber("RightSpeed", frontRight.get());
     SmartDashboard.putNumber("LeftSpeedN", leftSpeed);
@@ -103,26 +105,26 @@ public class ChassisSubsystem extends SubsystemBase {
     publishData();
   }
 
-  public void TankDrive(double leftSpeed, double rightSpeed){
+  public void TankDrive(double leftSpeed, double rightSpeed) {
     this.leftSpeed = leftSpeed;
     this.rightSpeed = rightSpeed;
     chasis.tankDrive(leftSpeed, rightSpeed);
   }
 
-  public void ArcadeDrive(double linearSpeed, double rotSpeed){
+  public void ArcadeDrive(double linearSpeed, double rotSpeed) {
     chasis.arcadeDrive(linearSpeed, rotSpeed);
   }
-  
+
   public void toggleReduccion() {
     forwardSolenoid.set(!forwardSolenoid.get());
-	backwardSolenoid.set(forwardSolenoid.get());
+    backwardSolenoid.set(forwardSolenoid.get());
   }
 
   public void toggleAim() {
-	aiming = !aiming;
+    aiming = !aiming;
   }
 
   public boolean isAiming() {
-	return aiming;
+    return aiming;
   }
 }
