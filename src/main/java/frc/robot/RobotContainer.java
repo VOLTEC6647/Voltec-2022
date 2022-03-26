@@ -8,13 +8,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.DeliveryConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.DeliveryEnable;
-import frc.robot.commands.DeliveryEnableConditional;
-import frc.robot.commands.DeliveryRotate;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
 import frc.robot.subsystems.ChassisSubsystem;
@@ -29,7 +26,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -104,10 +100,10 @@ public class RobotContainer {
 
         new JoystickButton(joystick2, Button.kY.value)
                 .whileHeld(
-                        new ParallelCommandGroup(
-                                new ShooterSpeed(1800,
-                                        shooter),
-                                new DeliveryEnable(0.3, delivery)))
+                new ParallelCommandGroup(
+                        new ShooterSpeed(1800, 
+                        shooter),
+                        new DeliveryEnable(0.3, delivery)))
                 .whenReleased(new ShooterSpeed(0, shooter));
         joystick2.Dpad.Down.whileHeld(
                 new MoveClimber(ClimberConstants.reverseSpeed, climber));
@@ -120,59 +116,72 @@ public class RobotContainer {
 
         new JoystickButton(joystick2, Button.kX.value)
                 .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
+        
+        new JoystickButton(joystick1, Button.kRightBumper.value)
+                .whileHeld(new InstantCommand(() -> chassis.toggleBrake(false)))
+                .whenReleased(new InstantCommand(() -> chassis.toggleBrake(true)));
 
         joystick2.rightTriggerButton.whileHeld(
                 new StartEndCommand(
-                        () -> intake.setIntakeMotorSpeed(.5),
-                        () -> intake.setIntakeMotorSpeed(0),
-                        intake));
+                () -> intake.setIntakeMotorSpeed(.5),
+                () -> intake.setIntakeMotorSpeed(0),
+                intake));
 
         joystick2.leftTriggerButton.whileHeld(
                 new StartEndCommand(
-                        () -> intake.setIntakeMotorSpeed(-.5),
-                        () -> intake.setIntakeMotorSpeed(0),
-                        intake));
+                () -> intake.setIntakeMotorSpeed(-.5),
+                () -> intake.setIntakeMotorSpeed(0),
+                intake));
         new JoystickButton(joystick2, Button.kRightBumper.value)
                 .whileHeld(new DeliveryEnable(-0.3, delivery));
         new JoystickButton(joystick1, Button.kLeftBumper.value)
-            .whileHeld(new StartEndCommand(() -> chassis.toggleAim(), () -> chassis.toggleAim(), chassis));
-    }
+                .whileHeld(new StartEndCommand(() -> chassis.toggleAim(), () -> chassis.toggleAim(), chassis));
+        }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-        return new SequentialCommandGroup(
-                // Disparar primera pelota
-                new SequentialCommandGroup(
-                        new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
-                        new DeliveryEnable(0.7, delivery)).withTimeout(4),
-                new ShooterSpeed(0, shooter),
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    // An ExampleCommand will run in autonomous
+    return new SequentialCommandGroup(
+        //Disparar primera pelota
+        // new SequentialCommandGroup(
+        //     new ShooterSpeed(3600, shooter),
+        //     new DeliveryEnable(0.7, delivery)
+        // ).withTimeout(3),
+        // new ShooterSpeed(0, shooter),
 
-                // Ir por segunda pelota
-                new RunCommand(() -> intake.toggleIntake(), intake),
-                new ParallelCommandGroup(
-                        new RunCommand(() -> chassis.TankDrive(.3, .3), chassis),
-                        new StartEndCommand(
-                                () -> intake.setIntakeMotorSpeed(.5),
-                                () -> intake.setIntakeMotorSpeed(0))).withTimeout(4),
-                new RunCommand(() -> chassis.TankDrive(0, 0), chassis).withTimeout(.2),
-                new RunCommand(() -> chassis.TankDrive(-.3, -.3), chassis).withTimeout(4),
-                new RunCommand(() -> chassis.TankDrive(0, 0), chassis).withTimeout(.2),
-                new SequentialCommandGroup(
-                        new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
-                        new DeliveryEnable(0.7, delivery)).withTimeout(4),
-                new ShooterSpeed(0, shooter));
-    }
+        //Ir por segunda pelota
+        // new RunCommand(()->intake.toggleIntake()).withInterrupt(intake.intakeOut::get),
+        
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
+        new ParallelCommandGroup( 
+            new RunCommand(()->chassis.TankDrive(-.4, -.4), chassis),
+            new StartEndCommand(
+                () -> intake.setIntakeMotorSpeed(.5),
+                () -> intake.setIntakeMotorSpeed(0)
+            )
+        ).withTimeout(2),
+        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
+        // new RunCommand(()->intake.toggleIntake()).withInterrupt(intake.intakeOut::get),
+        new RunCommand(()->chassis.TankDrive(.4, .4), chassis).withTimeout(2),
+        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2)
+        // new SequentialCommandGroup(
+        //     new ShooterSpeed(3600, shooter),
+        //     new DeliveryEnable(0.7, delivery)
+        // ).withTimeout(4),
+        // new ShooterSpeed(0, shooter)
+    );
+  }
 
-    public double getTrigger() {
-        return joystick2.getLeftTriggerAxis();
-    }
+  public double getTrigger() {
+    return joystick2.getLeftTriggerAxis();
+  }
 
-    public boolean isTrigger() {
-        return joystick2.leftTriggerButton.get();
-    }
+  public boolean isTrigger() {
+    return joystick2.leftTriggerButton.get();
+  }
 }

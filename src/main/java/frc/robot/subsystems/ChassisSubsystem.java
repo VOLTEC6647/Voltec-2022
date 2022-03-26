@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -37,7 +38,6 @@ public class ChassisSubsystem extends SubsystemBase {
   private final Object lock = new Object(); // Solamente para "pedir permiso" para correr el bloque de código
   private final Notifier notifier;
   private boolean aiming = false, firstRun = true;
-  // ...
 
   /** Creates a new Chasis. */
   public ChassisSubsystem() {
@@ -85,6 +85,12 @@ public class ChassisSubsystem extends SubsystemBase {
     });
 
     notifier.startPeriodic(0.01); // Iniciar subrutina a 10 ms por ciclo.
+    // Set CoastMode
+    rearLeft.setNeutralMode(NeutralMode.Coast);
+    rearRight.setNeutralMode(NeutralMode.Coast);
+    frontLeft.setNeutralMode(NeutralMode.Coast);
+    frontRight.setNeutralMode(NeutralMode.Coast);
+
   }
 
   // obtener error de los encoders a traves de la velocidad
@@ -126,5 +132,23 @@ public class ChassisSubsystem extends SubsystemBase {
 
   public boolean isAiming() {
     return aiming;
+  }
+
+  public void toggleBrake(boolean brake)
+  {
+    if(brake)
+    {
+      rearLeft.setNeutralMode(NeutralMode.Coast);
+      rearRight.setNeutralMode(NeutralMode.Coast);
+      frontLeft.setNeutralMode(NeutralMode.Coast);
+      frontRight.setNeutralMode(NeutralMode.Coast);
+    }
+    else if(!brake)
+    {
+      rearLeft.setNeutralMode(NeutralMode.Brake);
+      rearRight.setNeutralMode(NeutralMode.Brake);
+      frontLeft.setNeutralMode(NeutralMode.Brake);
+      frontRight.setNeutralMode(NeutralMode.Brake);
+    }
   }
 }
