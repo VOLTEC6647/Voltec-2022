@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -21,12 +20,14 @@ public class ChassisSubsystem extends SubsystemBase {
   private WPI_TalonFX frontRight = new WPI_TalonFX(ChasisConstants.frontRightID);
   private WPI_TalonFX rearLeft = new WPI_TalonFX(ChasisConstants.rearLeftID);
   private WPI_TalonFX rearRight = new WPI_TalonFX(ChasisConstants.rearRightID);
-  // private DoubleSolenoid reduction  = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid, ChasisConstants.LowGearSolenoid);
-  private DifferentialDrive chasis; 
+  // private DoubleSolenoid reduction = new
+  // DoubleSolenoid(PneumaticsModuleType.CTREPCM,
+  // ChasisConstants.HighGearSolenoid, ChasisConstants.LowGearSolenoid);
+  private DifferentialDrive chasis;
   private double leftSpeed, rightSpeed;
   private Solenoid forwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid);
   private Solenoid backwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.LowGearSolenoid);
-  
+
   /** Creates a new Chasis. */
   public ChassisSubsystem() {
     rearLeft.follow(frontLeft);
@@ -37,15 +38,16 @@ public class ChassisSubsystem extends SubsystemBase {
     rearRight.setInverted(InvertType.FollowMaster);
     chasis = new DifferentialDrive(frontLeft, frontRight);
 
-    //Set CoastMode
+    // Set CoastMode
     rearLeft.setNeutralMode(NeutralMode.Coast);
     rearRight.setNeutralMode(NeutralMode.Coast);
     frontLeft.setNeutralMode(NeutralMode.Coast);
     frontRight.setNeutralMode(NeutralMode.Coast);
 
   }
-  //obtener error de los encoders a traves de la velocidad
-  public void publishData(){
+
+  // obtener error de los encoders a traves de la velocidad
+  public void publishData() {
     SmartDashboard.putNumber("LeftSpeed", frontLeft.get());
     SmartDashboard.putNumber("RightSpeed", frontRight.get());
     SmartDashboard.putNumber("LeftSpeedN", leftSpeed);
@@ -55,32 +57,50 @@ public class ChassisSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RightEncoderBack", rearRight.getSelectedSensorPosition());
     SmartDashboard.putNumber("LeftEncoderBack", rearLeft.getSelectedSensorPosition());
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     publishData();
   }
 
-  public void TankDrive(double leftSpeed, double rightSpeed){
+  public void TankDrive(double leftSpeed, double rightSpeed) {
     this.leftSpeed = leftSpeed;
     this.rightSpeed = rightSpeed;
     chasis.tankDrive(leftSpeed, rightSpeed);
 
   }
 
-  public void ArcadeDrive(double linearSpeed, double rotSpeed){
+  public void ArcadeDrive(double linearSpeed, double rotSpeed) {
     chasis.arcadeDrive(linearSpeed, rotSpeed);
   }
-  public void toggleReduccion(){
+
+  public void toggleReduccion() {
     if (forwardSolenoid.get()) {
       forwardSolenoid.set(false);
       backwardSolenoid.set(true);
 
-    }else {
+    } else {
       forwardSolenoid.set(true);
-      backwardSolenoid.set(false);    
+      backwardSolenoid.set(false);
     }
   }
 
-  
+  public void toggleBrake(boolean brake)
+  {
+    if(brake)
+    {
+      rearLeft.setNeutralMode(NeutralMode.Coast);
+      rearRight.setNeutralMode(NeutralMode.Coast);
+      frontLeft.setNeutralMode(NeutralMode.Coast);
+      frontRight.setNeutralMode(NeutralMode.Coast);
+    }
+    else if(!brake)
+    {
+      rearLeft.setNeutralMode(NeutralMode.Brake);
+      rearRight.setNeutralMode(NeutralMode.Brake);
+      frontLeft.setNeutralMode(NeutralMode.Brake);
+      frontRight.setNeutralMode(NeutralMode.Brake);
+    }
+  }
 }

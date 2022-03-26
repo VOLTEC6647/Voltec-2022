@@ -115,6 +115,10 @@ public class RobotContainer {
 
     new JoystickButton(joystick2, Button.kX.value)
         .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
+    
+    new JoystickButton(joystick1, Button.kRightBumper.value)
+        .whileHeld(new InstantCommand(() -> chassis.toggleBrake(false)))
+        .whenReleased(new InstantCommand(() -> chassis.toggleBrake(true)));
 
     joystick2.rightTriggerButton.whileHeld(
         new StartEndCommand(
