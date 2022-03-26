@@ -134,7 +134,7 @@ public class RobotContainer {
                         intake));
         new JoystickButton(joystick2, Button.kRightBumper.value)
                 .whileHeld(new DeliveryEnable(-0.3, delivery));
-        new JoystickButton(joystick1, Button.kB.value)
+        new JoystickButton(joystick1, Button.kLeftBumper.value)
             .whileHeld(new StartEndCommand(() -> chassis.toggleAim(), () -> chassis.toggleAim(), chassis));
     }
 
