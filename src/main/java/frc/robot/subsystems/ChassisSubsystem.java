@@ -27,6 +27,8 @@ public class ChassisSubsystem extends SubsystemBase {
   private Solenoid forwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid);
   private Solenoid backwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.LowGearSolenoid);
   
+  public Boolean brake;
+
   /** Creates a new Chasis. */
   public ChassisSubsystem() {
     rearLeft.follow(frontLeft);
@@ -82,5 +84,25 @@ public class ChassisSubsystem extends SubsystemBase {
     }
   }
 
+  public void toggleBrake(boolean brake)
+  {
+    this.brake = brake;
+    if(brake)
+    {
+      rearLeft.setNeutralMode(NeutralMode.Coast);
+      rearRight.setNeutralMode(NeutralMode.Coast);
+      frontLeft.setNeutralMode(NeutralMode.Coast);
+      frontRight.setNeutralMode(NeutralMode.Coast);
+      brake = false;
+    }
+    else
+    {
+      rearLeft.setNeutralMode(NeutralMode.Brake);
+      rearRight.setNeutralMode(NeutralMode.Brake);
+      frontLeft.setNeutralMode(NeutralMode.Brake);
+      frontRight.setNeutralMode(NeutralMode.Brake);
+      brake = false;
+    }
+  }
   
 }

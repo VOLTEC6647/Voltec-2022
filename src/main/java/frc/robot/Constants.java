@@ -24,6 +24,8 @@ public final class Constants {
         public static final int rearRightID = 1;
         public static final int HighGearSolenoid = 0;
         public static final int LowGearSolenoid = 1;
+
+        public static final boolean brake = false;
     }
     
     public static final class ClimberConstants {

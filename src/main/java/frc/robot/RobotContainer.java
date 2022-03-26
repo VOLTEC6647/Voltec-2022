@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Constants.ChasisConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -115,6 +116,9 @@ public class RobotContainer {
 
     new JoystickButton(joystick2, Button.kX.value)
         .whenPressed(new InstantCommand(() -> intake.toggleIntake()));
+    
+    new JoystickButton(joystick1, Button.kX.value)
+        .whileHeld(new InstantCommand(() -> chassis.toggleBrake(ChasisConstants.brake)));
 
     joystick2.rightTriggerButton.whileHeld(
         new StartEndCommand(
