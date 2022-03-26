@@ -122,8 +122,9 @@ public class ChassisSubsystem extends SubsystemBase {
   }
 
   public void toggleReduccion() {
-    forwardSolenoid.set(!forwardSolenoid.get());
-    backwardSolenoid.set(forwardSolenoid.get());
+    var current = forwardSolenoid.get();
+    forwardSolenoid.set(!current);
+    backwardSolenoid.set(current);
   }
 
   public void toggleAim() {
