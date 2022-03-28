@@ -16,6 +16,8 @@ import frc.robot.commands.DeliveryEnableConditional;
 import frc.robot.commands.DeliveryRotate;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
+import frc.robot.commands.intakeIn;
+import frc.robot.commands.intakeOut;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.ClimberSubSystem;
 import frc.robot.subsystems.DeliverySubsystem;
@@ -146,16 +148,16 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return new SequentialCommandGroup(
         //Disparar primera pelota
-        // new SequentialCommandGroup(
-        //     new ShooterSpeed(3600, shooter),
-        //     new DeliveryEnable(0.7, delivery)
-        // ).withTimeout(3),
-        // new ShooterSpeed(0, shooter),
+        new SequentialCommandGroup(
+            new ShooterSpeed(3600, shooter),
+            new DeliveryEnable(0.7, delivery)
+        ).withTimeout(3),
+        new ShooterSpeed(0, shooter),
 
         //Ir por segunda pelota
         // new RunCommand(()->intake.toggleIntake()).withInterrupt(intake.intakeOut::get),
         
-        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
+        new intakeOut(intake).withTimeout(0.5),
         new ParallelCommandGroup( 
             new RunCommand(()->chassis.TankDrive(-.4, -.4), chassis),
             new StartEndCommand(
@@ -164,15 +166,16 @@ public class RobotContainer {
             )
         ).withTimeout(2),
         new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
-        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
+        new intakeIn(intake).withTimeout(0.5),
+        // new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
         // new RunCommand(()->intake.toggleIntake()).withInterrupt(intake.intakeOut::get),
         new RunCommand(()->chassis.TankDrive(.4, .4), chassis).withTimeout(2),
-        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2)
-        // new SequentialCommandGroup(
-        //     new ShooterSpeed(3600, shooter),
-        //     new DeliveryEnable(0.7, delivery)
-        // ).withTimeout(4),
-        // new ShooterSpeed(0, shooter)
+        new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
+        new SequentialCommandGroup(
+            new ShooterSpeed(3600, shooter),
+            new DeliveryEnable(0.7, delivery)
+        ).withTimeout(4),
+        new ShooterSpeed(0, shooter)
     );
   }
 
