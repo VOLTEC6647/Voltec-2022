@@ -37,6 +37,17 @@ public class IntakeSubsytem extends SubsystemBase {
       intakeOut.set(false);    
     }
   }
+
+  public void intakeIn(){
+    intakeIn.set(true);
+    intakeOut.set(false);
+  }
+
+  public void intakeOut(){
+    intakeOut.set(true);
+    intakeIn.set(false);
+  }
+  
   public void setIntakeMotorSpeed(double speed) {
     intakeMotor.set(speed*0.5);
   }
