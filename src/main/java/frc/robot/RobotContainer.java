@@ -145,24 +145,24 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return new SequentialCommandGroup(
         //Disparar primera pelota
-        // new SequentialCommandGroup(
-        //     new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
-        //     new DeliveryEnable(0.7, delivery)
-        // ).withTimeout(4),
+        //new SequentialCommandGroup(
+        //    new ShooterSpeed(ShooterConstants.shooter1MeterFender, shooter),
+        //    new DeliveryEnable(0.7, delivery)
+        //  ).withTimeout(4),
         // new ShooterSpeed(0, shooter),
 
         //3 Balls autonomous
 
         //Ir por segunda pelota
-        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.13),
         new ParallelCommandGroup( 
             new RunCommand(()->chassis.TankDrive(-.4, -.4), chassis),
             new StartEndCommand(
                 () -> intake.setIntakeMotorSpeed(.5),
                 () -> intake.setIntakeMotorSpeed(0)
             )
-        ).withTimeout(1.5),
-        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
+        ).withTimeout(2),
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.13),
 
         //Disparar las dos pelota
         new SequentialCommandGroup(
@@ -174,7 +174,7 @@ public class RobotContainer {
         new ShooterSpeed(0, shooter),
         new RunCommand(()->chassis.TankDrive(-.4,.4), chassis).withTimeout(3),
         new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
-        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.13),
         new ParallelCommandGroup( 
             new RunCommand(()->chassis.TankDrive(-.42, -.42), chassis),
             new StartEndCommand(
@@ -182,10 +182,10 @@ public class RobotContainer {
                 () -> intake.setIntakeMotorSpeed(0)
             )
         ).withTimeout(3),
-        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.11),
+        new RunCommand(()->intake.toggleIntake(), intake).withTimeout(0.13),
 
         new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
-        new RunCommand(()->chassis.TankDrive(.4, -.4), chassis).withTimeout(1.5),
+        new RunCommand(()->chassis.TankDrive(.4, -.4), chassis).withTimeout(1),
         new RunCommand(()->chassis.TankDrive(0,0), chassis).withTimeout(.2),
         
         //Disparar tercera pelota
