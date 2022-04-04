@@ -24,9 +24,7 @@ public class ChassisSubsystem extends SubsystemBase {
   private WPI_TalonFX frontRight = new WPI_TalonFX(ChasisConstants.frontRightID);
   private WPI_TalonFX rearLeft = new WPI_TalonFX(ChasisConstants.rearLeftID);
   private WPI_TalonFX rearRight = new WPI_TalonFX(ChasisConstants.rearRightID);
-  // private DoubleSolenoid reduction = new
-  // DoubleSolenoid(PneumaticsModuleType.CTREPCM,
-  // ChasisConstants.HighGearSolenoid, ChasisConstants.LowGearSolenoid);
+
   private DifferentialDrive chasis;
   private double leftSpeed, rightSpeed;
   private Solenoid forwardSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, ChasisConstants.HighGearSolenoid);
@@ -68,23 +66,27 @@ public class ChassisSubsystem extends SubsystemBase {
         synchronized (ChassisSubsystem.this) {
           if (!limelight.isTargetFound())
             return;
-
+          //Saca los datos de la visión en X y Y
           double tx = limelight.getData(Data.HORIZONTAL_OFFSET),
               ty = limelight.getData(Data.VERTICAL_OFFSET);
 
+          //Inicializa los valores de vision
           double kpAim = VisionConstants.kpAim, kpDistance = VisionConstants.kpDistance,
               min_aim_command = VisionConstants.min_aim_command;
           
+          //Calcula el ajuste de la distancia y angulo
           var steeringAdjust = tx > 1 ? (kpAim * -tx - min_aim_command)
               : (tx < -1 ? (kpAim * -tx + min_aim_command) : 0.0);
           var distanceAdjust = kpDistance * ty;
-          
+
+          //Aplica los ajustes
           TankDrive(-steeringAdjust + distanceAdjust, steeringAdjust + distanceAdjust);
         }
       }
     });
 
     notifier.startPeriodic(0.01); // Iniciar subrutina a 10 ms por ciclo.
+    
     // Set CoastMode
     rearLeft.setNeutralMode(NeutralMode.Coast);
     rearRight.setNeutralMode(NeutralMode.Coast);
@@ -107,7 +109,6 @@ public class ChassisSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     publishData();
   }
 
@@ -131,6 +132,7 @@ public class ChassisSubsystem extends SubsystemBase {
     aiming = !aiming;
   }
 
+  //No se usa pero se deja por si se necesita
   public boolean isAiming() {
     return aiming;
   }

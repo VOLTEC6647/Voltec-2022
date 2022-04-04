@@ -5,12 +5,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-// import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants.IntakeConstants;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -19,16 +17,14 @@ public class IntakeSubsytem extends SubsystemBase {
   private static CANSparkMax intakeMotor = new CANSparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
   private Solenoid intakeIn = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.intakeIn);
   private Solenoid intakeOut = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.intakeOut);
-  // private RelativeEncoder indexerEncoder;
   
   public IntakeSubsytem() {
     intakeMotor.restoreFactoryDefaults();
-    // indexerEncoder = intakeMotor.getEncoder();
   }
 
-    
   public void toggleIntake(){
-    if (intakeIn.get()) {
+    boolean intakeState = intakeIn.get();
+    if (intakeState) {
       intakeIn.set(false);
       intakeOut.set(true);
 
@@ -37,7 +33,8 @@ public class IntakeSubsytem extends SubsystemBase {
       intakeOut.set(false);    
     }
   }
-
+  
+  // Estos se usan para el autonomo solamente 
   public void intakeIn(){
     intakeIn.set(true);
     intakeOut.set(false);
@@ -52,14 +49,5 @@ public class IntakeSubsytem extends SubsystemBase {
     intakeMotor.set(speed*0.5);
   }
 
-  // public void publishData(){
-  //   SmartDashboard.putNumber("IndexerPosition", indexerEncoder.getPosition());
-  //   SmartDashboard.putNumber("IndexerEncoder", indexerEncoder.getVelocity());
-  // }
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    // publishData();
-  }
-
+  public void periodic() {}
 }
