@@ -2,6 +2,8 @@
 ## Introduction
 Team 6647's repository for the 2022 Season Rapid React
 
+![Imgur](https://i.imgur.com/fQhMzNn.jpeg)
+
 ## Subsystems
 
 The robot is organized in different subsystems
@@ -21,3 +23,6 @@ The robot is capable of certain things that might stand out and that increases i
 
 ## Autonomous
 The autonomous moves out of the tarmac and shoots two balls 
+
+## External libraries
+We encourage the use of team 6647's library for JSON-oriented object initialization. We have used certain features from the library to program the robot. If you are interesed in finding more about said library, it can be found [here](https://github.com/VOLTEC6647/lib6647)
