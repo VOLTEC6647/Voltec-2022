@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
@@ -125,13 +126,13 @@ public class RobotContainer {
 
         joystick2.rightTriggerButton.whileHeld(
                 new StartEndCommand(
-                () -> intake.setIntakeMotorSpeed(.5),
+                () -> intake.setIntakeMotorSpeed(IntakeConstants.intakeSpeed),
                 () -> intake.setIntakeMotorSpeed(0),
                 intake));
 
         joystick2.leftTriggerButton.whileHeld(
                 new StartEndCommand(
-                () -> intake.setIntakeMotorSpeed(-.5),
+                () -> intake.setIntakeMotorSpeed(-IntakeConstants.intakeSpeed),
                 () -> intake.setIntakeMotorSpeed(0),
                 intake));
         new JoystickButton(joystick2, Button.kRightBumper.value)
@@ -150,7 +151,7 @@ public class RobotContainer {
     return new SequentialCommandGroup(
         //Disparar primera pelota
         new SequentialCommandGroup(
-            new ShooterSpeed(3600, shooter),
+            new ShooterSpeed(3580, shooter),
             new DeliveryEnable(0.7, delivery)
         ).withTimeout(2),
         new ShooterSpeed(0, shooter),
@@ -173,7 +174,7 @@ public class RobotContainer {
         new RunCommand(()->chassis.TankDrive(.45, .45), chassis).withTimeout(2),
         new RunCommand(()->chassis.TankDrive(0, 0), chassis).withTimeout(.2),
         new SequentialCommandGroup(
-            new ShooterSpeed(3600, shooter),
+            new ShooterSpeed(3550, shooter),
             new DeliveryEnable(0.7, delivery)
         ).withTimeout(4),
         new ShooterSpeed(0, shooter)
