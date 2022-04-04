@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.DeliveryEnable;
 import frc.robot.commands.MoveClimber;
 import frc.robot.commands.ShooterSpeed;
@@ -51,12 +50,6 @@ public class RobotContainer {
 
     private final ChassisSubsystem chassis = new ChassisSubsystem();
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
     public RobotContainer() {
         // Configure the button bindings
         chassis.setDefaultCommand(

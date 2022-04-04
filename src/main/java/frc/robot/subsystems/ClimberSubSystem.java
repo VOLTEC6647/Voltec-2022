@@ -20,11 +20,11 @@ public class ClimberSubSystem extends SubsystemBase
   {
     climberM.restoreFactoryDefaults();
 
+    // Pone softLimits
     climberM.setSoftLimit(SoftLimitDirection.kForward, ClimberConstants.forwardLimit);
     climberM.setSoftLimit(SoftLimitDirection.kReverse, ClimberConstants.reverseLimit);
     climberM.enableSoftLimit(SoftLimitDirection.kReverse, true);
     climberM.enableSoftLimit(SoftLimitDirection.kForward, true);
-
 
     climberEncoder = climberM.getEncoder();
   }
@@ -41,11 +41,6 @@ public class ClimberSubSystem extends SubsystemBase
 
   public void setClimberPercentage(double percentage) 
   {
-    climberM.set(percentage);    
-  }
-
-  public void retractClimnber()
-  {
-
+    climberM.set(percentage);
   }
 }
