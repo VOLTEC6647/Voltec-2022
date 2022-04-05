@@ -26,3 +26,25 @@ The autonomous moves out of the tarmac and shoots two balls
 
 ## External libraries
 We encourage the use of team 6647's library for JSON-oriented object initialization. We have used certain features from the library to program the robot. If you are interesed in finding more about said library, it can be found [here](https://github.com/VOLTEC6647/lib6647)
+
+## Button bindings
+### Driver 1 (Joystick 1)
+* Chassis
+  * Left and right joysticks for movement
+  * Y Button toggle toggle motor reductions
+  * Right Bumper to toggle motor breaks
+  * Left Bumper for LimeLight range and distance automatic adjustment
+
+### Driver 2 (Joystick 2)
+* Shooter
+  * A Button to shoot close to the fender
+  * B Button to shoot 1 meter from the fender
+  * Y Button to release the ball through the shooter if it is from the opposite alliance
+  * Right Bumper to push out balls from within the indexer if they are stuck 
+* Intake
+  * X to toggle intake
+  * Left Trigger to move intake wheels backwards (kicks and pushs balls)
+  * Right Trigger to move intake wheels forward (pulls balls into the robot)
+* Climber
+  * Dpad Up to extend climber
+  * Dpad Down to retract climber
