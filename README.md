@@ -1,6 +1,6 @@
 ﻿# RobotVoltec2022
 ## Introduction
-Team 6647's repository for the 2022 Season Rapid React
+Team 6647's repository for the 2022 Season Rapid React robot
 
 ![Imgur](https://i.imgur.com/fQhMzNn.jpeg)
 
