@@ -13,11 +13,11 @@ The robot is organized in different subsystems
 * Climber
 
 ## Capabilities
-The robot is capable of certain things that might stand out and that increases it's performance
+The robot is capable of certain things that might make it stand out. They increase the robot' performance
 * Adjustment of range and distance using a Limelight
 * 3 Different shooting settings depending on the position of the robot (Can be chosen by driver)
-* Release ball through shooter if it is from the opposite alliance
-* Release ball through intake if it is from the opposite alliance
+* Release ball through shooter, if it is from the opposite alliance
+* Release ball through intake, if it is from the opposite alliance
 * Voluntary break to avoid being pushed (We recommend to avoid using this and/or improve it to avoid damage to your motors and voltage spikes) 
 * Toggle motor reductions to improve/decrease speed
 
@@ -34,9 +34,9 @@ The autonomous moves out of the tarmac and shoots two balls
 
 ### Driver 2 (Joystick 2)
 * Shooter
-  * A Button to shoot close to the fender
-  * B Button to shoot 1 meter from the fender
-  * Y Button to release the ball through the shooter if it is from the opposite alliance
+  * A Button to shoot right next to the fender
+  * B Button to shoot 1 meter away from the fender
+  * Y Button to release the ball through the shooter, if it is from the opposite alliance
   * Right Bumper to push out balls from within the indexer if they are stuck 
 * Intake
   * X to toggle intake
