@@ -5,23 +5,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsytem;
+import frc.robot.subsystems.HoodSubsystem;
 
-public class IntakeMotorSpeed extends CommandBase {
-  private IntakeSubsytem intake;
+public class MoveHood extends CommandBase {
+
+  private HoodSubsystem hood;
+
   private double speed;
-  /** Creates a new IntakeMotorSpeed. */
-  public IntakeMotorSpeed(double speed, IntakeSubsytem intake) {
-    this.intake = intake;
+  /** Creates a new MoveHood. */
+  public MoveHood(double speed, HoodSubsystem hood) {
+    addRequirements(hood);
+
     this.speed = speed;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
+    this.hood = hood;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setIntakeMotorSpeed(speed);
+    hood.setHoodPercentage(speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,9 +33,9 @@ public class IntakeMotorSpeed extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setIntakeMotorSpeed(0);
+    hood.setHoodPercentage(0);
   }
-  
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

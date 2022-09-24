@@ -58,7 +58,6 @@ public class LimelightCamera {
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
-				// TODO: Properly format this error.
 				e.printStackTrace();
 				Thread.currentThread().interrupt();
 			}

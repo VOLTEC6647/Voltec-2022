@@ -42,6 +42,15 @@ public final class Constants {
         public static int velocityTolerance = 25;
     }
 
+    public static final class HoodConstants {
+        public static int hoodID = 10;
+
+        public static final int forwardLimit = 0;
+        public static final int reverseLimit = 10;
+
+        public static final double speed = .01;
+    }
+
     public static final class DeliveryConstants {
         public static final int deliveryID = 3;
         // Delivery PID

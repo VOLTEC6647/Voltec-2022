@@ -8,17 +8,20 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.HoodConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DeliveryEnable;
 import frc.robot.commands.MoveClimber;
+import frc.robot.commands.MoveHood;
 import frc.robot.commands.ShooterSpeed;
 import frc.robot.commands.intakeIn;
 import frc.robot.commands.intakeOut;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.ClimberSubSystem;
 import frc.robot.subsystems.DeliverySubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IntakeSubsytem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.XboxControllerUpgrade;
@@ -50,8 +53,10 @@ public class RobotContainer {
     private final XboxControllerUpgrade joystick2 = new XboxControllerUpgrade(OIConstants.KDriverControllerPort1, 0.2);
 
     private final ChassisSubsystem chassis = new ChassisSubsystem();
+    private final HoodSubsystem hood = new HoodSubsystem();
 
     public RobotContainer() {
+        
         // Configure the button bindings
         chassis.setDefaultCommand(
                 new RunCommand(() -> chassis.TankDrive(joystick1.getLeftY(), joystick1.getRightY()), chassis));
@@ -62,7 +67,6 @@ public class RobotContainer {
          * -joystick1.getRightX()), chassis));
          * configureButtonBindings();
          */
-
     }
 
     /**
@@ -116,6 +120,12 @@ public class RobotContainer {
         new JoystickButton(joystick1, Button.kRightBumper.value)
                 .whileHeld(new InstantCommand(() -> chassis.toggleBrake(false)))
                 .whenReleased(new InstantCommand(() -> chassis.toggleBrake(true)));
+
+        joystick1.rightTriggerButton.whileHeld(
+                new MoveHood(HoodConstants.speed, hood));
+
+        joystick1.leftTriggerButton.whileHeld(
+                new MoveHood(HoodConstants.speed, hood));
 
         joystick2.rightTriggerButton.whileHeld(
                 new StartEndCommand(
